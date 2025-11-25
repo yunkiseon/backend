@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form action="/add" method="get">
+      <div>
+        <input type="text" name="num1" id="num1" size="5" th:value="${num1}" />
+        <select name="op" id="op">
+          <option value="+">+</option>
+          <option value="-">-</option>
+          <option value="*">*</option>
+          <option value="/">/</option>
+        </select>
+        <input type="text" name="num2" id="num2" size="5" th:value="${num2}" />
+        <button type="submit">계산</button>
+        <input type="text" name="result" id="result" size="5" th:value="${result}" />
+      </div>
+    </form>
+  </body>
+</html>

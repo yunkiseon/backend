@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form action="" method="post">
+      <div>
+        <label for="username">이름</label>
+        <input type="text" name="username" id="username" th:value="${info?.username}" />
+      </div>
+      <div>
+        <label for="age">나이</label>
+        <input type="text" name="age" id="age" th:value="${info?.age}" />
+      </div>
+      <div>
+        <label for="addr">주소</label>
+        <input type="text" name="addr" id="addr" th:value="${info?.addr}" />
+      </div>
+      <div>
+        <label for="tel">전화번호</label>
+        <input type="text" name="tel" id="tel" th:value="${info?.tel}" />
+      </div>
+      <button type="submit">전송</button>
+    </form>
+    <p>[[${info?.addr}]]</p>
+    <p th:text="${info?.addr}"></p>
+    <!--info? info 가 null 일 수 있음-->
+  </body>
+</html>
