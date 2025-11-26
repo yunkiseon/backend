@@ -14,5 +14,9 @@ public class HomeController {
     public String getHome() {
         return "home";
     }
+    @GetMapping("/separate")
+    public void getSpt() {
+        log.info("separate 연결");
+    }
     
 }

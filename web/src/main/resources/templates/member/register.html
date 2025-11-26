@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layouts/default}"
+>
+  <th:block layout:fragment="title">
+    <!--페이지별 개별 title 태그 작성-->
+    <title>회원가입</title>
+  </th:block>
+  <div layout:fragment="content">
+    <form action="" method="post" th:object="${registerDTO}">
+      <div class="mb-3">
+        <label for="id" class="form-label">아이디</label>
+        <input
+          type="text"
+          class="form-control"
+          id="id"
+          placeholder="아이디"
+          name="id"
+          th:value="${registerDTO.id}"
+        />
+        <div class="text-danger" th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></div>
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">비밀번호</label>
+        <input
+          type="password"
+          class="form-control"
+          id="password"
+          placeholder="비밀번호"
+          name="password"
+          th:value="${registerDTO.password}"
+        />
+        <div
+          class="text-danger"
+          th:if="${#fields.hasErrors('password')}"
+          th:errors="*{password}"
+        ></div>
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">이메일</label>
+        <input
+          type="email"
+          class="form-control"
+          id="email"
+          placeholder="이메일"
+          name="email"
+          th:value="${registerDTO.email}"
+        />
+      </div>
+      <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+      <div>
+        <button type="submit" class="btn btn-outline-success">회원가입</button>
+      </div>
+    </form>
+  </div>
+</html>
