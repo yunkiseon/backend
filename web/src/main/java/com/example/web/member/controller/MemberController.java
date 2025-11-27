@@ -43,6 +43,11 @@ public class MemberController {
         log.info("회원가입 요청 {}",dto);
         
         if (result.hasErrors()) {
+
+            for (Object fieldError : result.getAllErrors()) {
+                System.out.println(fieldError);
+            }
+
             return"member/register";
         }
         return "redirect:/member/login";

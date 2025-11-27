@@ -49,10 +49,34 @@
           name="email"
           th:value="${registerDTO.email}"
         />
+        <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
       </div>
-      <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
-      <div>
-        <button type="submit" class="btn btn-outline-success">회원가입</button>
+      <div class="mb-3">
+        <label for="name" class="form-label">이름</label>
+        <input
+          type="name"
+          class="form-control"
+          id="name"
+          placeholder="이름"
+          name="name"
+          th:value="${registerDTO.name}"
+        />
+        <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+      </div>
+      <div class="mb-3">
+        <label for="age" class="form-label">나이</label>
+        <input
+          type="age"
+          class="form-control"
+          id="age"
+          placeholder="나이"
+          name="age"
+          th:value="${registerDTO.age}"
+        />
+        <div class="text-danger" th:if="${#fields.hasErrors('age')}" th:errors="*{age}"></div>
+        <div>
+          <button type="submit" class="btn btn-outline-success">회원가입</button>
+        </div>
       </div>
     </form>
   </div>
