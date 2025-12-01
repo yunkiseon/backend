@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/main_layout}">
+  <div layout:fragment="content">
+    <h1>Create</h1>
+    <form action="" method="post" id="insert-form" th:object="${dto}">
+      <div class="mb-3">
+        <!--insert를 클릭한다. controller의 getmapping/create가 실행된다. 
+        그런데 그곳에 dto.id를 담지 않아서 th:value dto.id 를 썼기 때문에 에러가 났다. 
+        삽입이라는 행위를 하면 DB에 들어간다. 그래서 그 전에 유효성 검사로 확인하고 DB에 삽입되어야 한다. 
+        thobj 에서 클래스 앞자리만 소문자로 바꾸고 다쓰는 것이 규칙. 만약 memoDTO를 dto로 바꾸고 싶다면
+        @ModelAttribute를 getmapping에
+        -->
+      <div class="mb-3">
+        <label for="text" class="form-label">내용</label>
+        <textarea class="form-control" id="text" rows="3" name="text" th:field="*{text}">
+        </textarea>
+        <div class="text-danger" th:if="${#fields.hasErrors('text')}" th:errors="*{text}"></div>
+      </div>
+
+      <a type="button" class="btn btn-outline-success" th:href="@{/memo/list}">목록</a>
+      <button type="submit" class="btn btn-outline-primary">추가</button>
+    </form>
+  </div>
+  <th:block layout:fragment="script">
+  </th:block>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/main_layout}">
+  <div layout:fragment="content">
+    <h1>LIST</h1>
+    <!--전체메모 조회-->
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">번호</th>
+          <th scope="col">내용</th>
+          <th scope="col">작성일자</th>
+          <th scope="col">수정일자</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="dto : ${list}">
+          <th scope="row" th:text="${dto.id}"></th>
+          <!--하나의 메모 조회 /memo/read?id=1, 
+          하나의 메모 수정 1) 수정할 메모 가져오기 memo/modify?id=1 + get
+          2) 수정 후 보내기 : memo/modify?id=1 + post
+          하나의 메모 삭제 /memo/remove?id=1
+          메모 삽입 /memo/create?id=1
+          -->
+          <td>
+            <a th:href="@{/memo/read(id=${dto.id})}" th:text="${dto.text}"></a>
+          </td>
+          <td th:text="${#temporals.format(dto.createDate, 'yyyy-MM-dd HH:mm')}"></td>
+          <td th:text="${#temporals.format(dto.updateDate, 'yyyy-MM-dd HH:mm')}"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <th:block layout:fragment="script">
+    <!--리다이렉트 시 메세지 보내기-->
+    <script th:inline="javascript">
+      let msg = [[${msg}]];
+      console.log(msg);
+      if (msg) {
+        Swal.fire({
+          title:  msg,
+          icon: "success",
+          draggable: true,
+        });
+
+      }
+    </script>
+  </th:block>
+</html>

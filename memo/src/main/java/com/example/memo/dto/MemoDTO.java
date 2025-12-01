@@ -2,6 +2,7 @@ package com.example.memo.dto;
 
 import java.time.LocalDateTime;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,8 +18,12 @@ import lombok.ToString;
 @Builder
 public class MemoDTO {
     private Long id;
-    private String text;
+
+    @NotBlank(message = "메모 내용은 필수입력 요소입니다")
+    private String text; // 유효성 검사
+    
     private LocalDateTime createDate;
+
     private LocalDateTime updateDate;
 }
 

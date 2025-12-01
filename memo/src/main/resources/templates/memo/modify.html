@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/main_layout}">
+  <div layout:fragment="content">
+    <h1>Modify</h1>
+    <form action="" method="post" id="modify-form">
+      <div class="mb-3">
+        <label for="id" class="form-label">번호</label>
+        <input type="text" class="form-control" id="id" th:value="${dto.id}" name="id" readonly />
+      </div>
+      <div class="mb-3">
+        <label for="text" class="form-label">내용</label>
+        <textarea class="form-control" id="text" rows="3" name="text">
+          [[${dto.text}]]
+        </textarea>
+      </div>
+      <!--웹에서 기본은 get 특히 a태그는 더더욱. post를 넣었을 때만 post인 것이다.-->
+      <a type="button" class="btn btn-outline-success" th:href="@{/memo/list}">목록</a>
+      <button type="submit" class="btn btn-outline-primary">수정</button>
+      <button type="button" class="btn btn-outline-danger">삭제</button>
+    </form>
+  </div>
+  <th:block layout:fragment="script">
+    <!--페이지별 개별 javascript 작성 -> 수정 버튼과 삭제 버튼의 보낼 링크가 달라서
+      여기는 static 폴더로 링크-->
+    <script th:src="@{/js/modify.js}"></script>
+  </th:block>
+</html>
