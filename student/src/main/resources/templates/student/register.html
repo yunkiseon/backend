@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/main_layout}">
+  <div layout:fragment="content">
+    <h1>학생등록</h1>
+    <!--이름 성별 주소 등급 모두 받아야하는 form 이 필요하다-->
+    <form action="" method="post" id="insert-form">
+      <div class="mb-3">
+        <label for="text" class="form-label">이름</label>
+        <input type="text" name="name" id="name" placeholder="이름 입력" class="form-control" />
+      </div>
+      <div class="mb-3">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="gender" id="gender_m" value="M" />
+          <label class="form-check-label" for="gender_m"> 남 </label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="gender" id="gender_f" value="F" />
+          <label class="form-check-label" for="gender_f"> 여 </label>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="addr" class="form-label">주소</label>
+        <input type="text" name="addr" id="addr" placeholder="주소 입력" class="form-control" />
+        <!-- <div class="text-danger" th:if="${#fields.hasErrors('text')}" th:errors="*{text}"></div> -->
+      </div>
+      <div class="mb-3">
+        <label for="grade" class="form-label">학년</label>
+        <select class="form-select" aria-label="Default select example" name="grade">
+          <option selected>학년 선택</option>
+          <option value="FRESHMAN">FRESHMAN</option>
+          <option value="SOPHOMORE">SOPHOMORE</option>
+          <option value="JUNIOR">JUNIOR</option>
+          <option value="SENIOR">SENIOR</option>
+        </select>
+      </div>
+      <a type="button" class="btn btn-outline-success" th:href="@{/student/list}">목록</a>
+      <button type="submit" class="btn btn-outline-primary">등록</button>
+    </form>
+  </div>
+</html>

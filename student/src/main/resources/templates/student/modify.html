@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/main_layout}">
+  <div layout:fragment="content">
+    <h1>학생등록</h1>
+    <!--이름 성별 주소 등급 모두 받아야하는 form 이 필요하다-->
+    <form action="" method="post" id="insert-form">
+      <div class="mb-3">
+        <label for="id" class="form-label">아이디</label>
+        <input type="text" name="id" id="id" class="form-control" th:value="${dto.id}" readonly />
+      </div>
+      <div class="mb-3">
+        <label for="text" class="form-label">이름</label>
+        <input type="text" name="name" id="name" class="form-control" th:value="${dto.name}" />
+      </div>
+      <div class="mb-3">
+        <label for="text" class="form-label">성별</label>
+        <input
+          type="text"
+          name="gender"
+          id="gender"
+          class="form-control"
+          th:value="${dto.gender}"
+          readonly
+        />
+      </div>
+      <div class="mb-3">
+        <label for="addr" class="form-label">주소</label>
+        <input
+          type="text"
+          name="addr"
+          id="addr"
+          class="form-control"
+          th:value="${dto.addr}"
+          readonly
+        />
+        <!-- <div class="text-danger" th:if="${#fields.hasErrors('text')}" th:errors="*{text}"></div> -->
+      </div>
+      <div class="mb-3">
+        <label for="grade" class="form-label">학년</label>
+        <select class="form-select" aria-label="Default select example" name="grade">
+          <!--선언이 dto에서 된게 아니라 grade에 enum 읋 되어있어서
+          아래에서 freshman에 쓰인 방법은 thymeleaf가 해석하고 junior에 쓰인 방식은 SpringEL이 해석-->
+          <option value="FRESHMAN" th:selected="${dto.grade.name()} == 'FRESHMAN'">FRESHMAN</option>
+          <option value="SOPHOMORE" th:selected="${dto.grade.name()} == 'SOPHOMORE'">
+            SOPHOMORE
+          </option>
+          <option value="JUNIOR" th:selected="${dto.grade.name() == 'JUNIOR'}">JUNIOR</option>
+          <option value="SENIOR" th:selected="${dto.grade.name() == 'SENIOR'}">SENIOR</option>
+        </select>
+      </div>
+      <a type="button" class="btn btn-outline-success" th:href="@{/student/list}">목록</a>
+      <button type="submit" class="btn btn-outline-primary">수정</button>
+      <button type="button" class="btn btn-outline-danger">삭제</button>
+    </form>
+    <!--버튼이 눌리면 이 form이 실행되면 된다.-->
+    <form th:action="@{/student/remove}" method="post" name="remove-form">
+      <input type="hidden" name="id" th:value="${dto.id}" />
+    </form>
+  </div>
+  <th:block layout:fragment="script">
+    <!--페이지별 개별 javascript 작성-->
+    <script th:src="@{/js/modify.js}"></script>
+  </th:block>
+</html>
