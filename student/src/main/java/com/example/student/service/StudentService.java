@@ -2,6 +2,7 @@ package com.example.student.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Sort;
@@ -33,10 +34,11 @@ public class StudentService {
     public List<StudentDTO> readAll(){
         List<Student> result = studentRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
         //entity -> dto
-        List<StudentDTO> list = new ArrayList<>();
-        for (Student student : result) {
-            list.add(modelMapper.map(student, StudentDTO.class));
-        }
+        // List<StudentDTO> list = new ArrayList<>();
+        // for (Student student : result) {
+        //     list.add(modelMapper.map(student, StudentDTO.class));
+        // }
+        List<StudentDTO> list = result.stream().map(student -> modelMapper.map(student, StudentDTO.class)).collect(Collectors.toList());
         return list;
     }
     public Long update(StudentDTO dto){

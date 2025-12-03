@@ -2,6 +2,8 @@ package com.example.memo.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,22 +38,24 @@ public class MemoService {
         // 리턴하기 전 Memo entity -> MemoDTO 로 변경후 리턴
         // 담겨 있는 리스트 내용을 하나씩 빼서 dto로 바꾸고 다시 list.add 하면 된다. 
         // memo.getId memo.getText memo.getCreateDate memo.getUpdateDate
-        List<MemoDTO> list = new ArrayList<>();
+        // List<MemoDTO> list = new ArrayList<>();
         
 
 
-        for (Memo memo : memos) {
-            // MemoDTO dto = MemoDTO.builder()
-            // .id( memo.getId())
-            // .text( memo.getText())
-            // .createDate(memo.getCreateDate())
-            // .updateDate(memo.getUpdateDate())
-            // .build();
+        // for (Memo memo : memos) {
+        //     // MemoDTO dto = MemoDTO.builder()
+        //     // .id( memo.getId())
+        //     // .text( memo.getText())
+        //     // .createDate(memo.getCreateDate())
+        //     // .updateDate(memo.getUpdateDate())
+        //     // .build();
 
-            MemoDTO dto = modelMapper.map(memo, MemoDTO.class);
+        //     MemoDTO dto = modelMapper.map(memo, MemoDTO.class);
 
-            list.add(dto);
-        }
+        //     list.add(dto);
+        // }
+        List<MemoDTO> list = memos.stream().map(memo->modelMapper.map(memo, MemoDTO.class))
+        .collect(Collectors.toList());
         return list;
 
     }
