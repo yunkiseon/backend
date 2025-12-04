@@ -39,6 +39,12 @@ public class Book {
     @Column(nullable = false)
     private String author;
 
+    private String description;//나중에 추가한 것이기때문에 validate를 update로 해주어야함
+
+    public void changeDescription(String description){
+        this.description = description;
+    }
+
     public void changePrice(int price){
         this.price = price;
     }

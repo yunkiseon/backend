@@ -3,10 +3,10 @@
   <div layout:fragment="content">
     <div class="card">
       <div class="card-body">
-        <h5 class="card-title fw-semibold mb-4">도서 등록</h5>
+        <h5 class="card-title fw-semibold mb-4">도서조회</h5>
         <div class="card">
           <div class="card-body">
-            <form action="" method="post" th:object="${bookDTO}">
+            <form action="" method="post">
               <div class="mb-3">
                 <label for="isbn" class="form-label">ISBN</label>
                 <input
@@ -15,13 +15,9 @@
                   id="isbn"
                   aria-describedby="isbn"
                   name="isbn"
-                  th:value="${bookDTO.isbn}"
+                  th:value="${dto.isbn}"
+                  readonly
                 />
-                <div
-                  class="text-danger"
-                  th:if="${#fields.hasErrors('isbn')}"
-                  th:errors="*{isbn}"
-                ></div>
               </div>
               <div class="mb-3">
                 <label for="title" class="form-label">TITLE</label>
@@ -30,13 +26,9 @@
                   class="form-control"
                   id="title"
                   name="title"
-                  th:value="${bookDTO.title}"
+                  th:value="${dto.title}"
+                  readonly
                 />
-                <div
-                  class="text-danger"
-                  th:if="${#fields.hasErrors('title')}"
-                  th:errors="*{title}"
-                ></div>
               </div>
               <div class="mb-3">
                 <label for="author" class="form-label">AUTHOR</label>
@@ -45,13 +37,9 @@
                   class="form-control"
                   id="author"
                   name="author"
-                  th:value="${bookDTO.author}"
+                  th:value="${dto.author}"
+                  readonly
                 />
-                <div
-                  class="text-danger"
-                  th:if="${#fields.hasErrors('author')}"
-                  th:errors="*{author}"
-                ></div>
               </div>
               <div class="mb-3">
                 <label for="price" class="form-label">PRICE</label>
@@ -60,13 +48,9 @@
                   class="form-control"
                   id="price"
                   name="price"
-                  th:value="${bookDTO.price}"
+                  th:value="${dto.price}"
+                  readonly
                 />
-                <div
-                  class="text-danger"
-                  th:if="${#fields.hasErrors('price')}"
-                  th:errors="*{price}"
-                ></div>
               </div>
               <div class="mb-3">
                 <label for="description" class="form-label">DESCRIPTION</label>
@@ -76,16 +60,34 @@
                   id="description"
                   name="description"
                   rows="3"
-                  th:value="${bookDTO.description}"
+                  th:value="${dto.description}"
+                  readonly
                 >
-                [[${bookDTO.description}]]
+                [[${dto.description}]]
                 </textarea>
               </div>
-              <button type="submit" class="btn btn-primary">Submit</button>
+              <a type="button" class="btn btn-primary" th:href="@{/book/list}">목록</a>
+              <a type="button" class="btn btn-primary" th:href="@{/book/modify(id=${dto.id})}"
+                >수정</a
+              >
             </form>
           </div>
         </div>
       </div>
     </div>
   </div>
+  <th:block layout:fragment="script">
+    <!--리다이렉트 시 메세지 보내기-->
+    <script th:inline="javascript">
+      let msg = [[${msg}]];
+      console.log(msg);
+      if (msg) {
+        Swal.fire({
+          title:  msg,
+          icon: "success",
+          draggable: true,
+        });
+      }
+    </script>
+  </th:block>
 </html>

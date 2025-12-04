@@ -22,21 +22,25 @@
             <span class="hide-menu">Home</span>
           </li>
           <li class="sidebar-item">
-            <a class="sidebar-link" href="./index.html" aria-expanded="false">
+            <a class="sidebar-link" th:href="@{/book/list}" aria-expanded="false">
               <i class="ti ti-atom"></i>
-              <span class="hide-menu">Dashboard</span>
+              <span class="hide-menu">List</span>
             </a>
           </li>
           <!-- ---------------------------------- -->
           <!-- Dashboard -->
           <!-- ---------------------------------- -->
           <li class="sidebar-item">
-            <a class="sidebar-link justify-content-between" href="#" aria-expanded="false">
+            <a
+              class="sidebar-link justify-content-between"
+              th:href="@{/book/register}"
+              aria-expanded="false"
+            >
               <div class="d-flex align-items-center gap-3">
                 <span class="d-flex">
                   <i class="ti ti-aperture"></i>
                 </span>
-                <span class="hide-menu">Analytical</span>
+                <span class="hide-menu">Register</span>
               </div>
             </a>
           </li>

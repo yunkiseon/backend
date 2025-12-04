@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/layout}">
+  <div layout:fragment="content">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title fw-semibold mb-4">List</h5>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">isbn</th>
+              <th scope="col">title</th>
+              <th scope="col">price</th>
+              <th scope="col">author</th>
+              <th scope="col">description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="dto : ${list}">
+              <th scope="row" th:text="${dto.isbn}"></th>
+              <td><a th:href="@{/book/read(id=${dto.id})}" th:text="${dto.title}"></a></td>
+              <td th:text="${dto.price}"></td>
+              <td th:text="${dto.author}"></td>
+              <td th:text="${dto.description}"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <th:block layout:fragment="script">
+    <!--리다이렉트 시 메세지 보내기-->
+    <script th:inline="javascript">
+      let msg = [[${msg}]];
+      console.log(msg);
+      if (msg) {
+        Swal.fire({
+          title:  msg,
+          icon: "success",
+          draggable: true,
+        });
+      }
+    </script>
+  </th:block>
+</html>
