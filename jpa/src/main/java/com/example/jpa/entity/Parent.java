@@ -3,44 +3,35 @@ package com.example.jpa.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-@ToString(exclude = "members")
-// @ToString
 @Builder
-@AllArgsConstructor
 @Getter
-@Table(name = "teamtbl")
-@Entity
+@AllArgsConstructor
 @NoArgsConstructor
-
-public class Team {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+@Entity
+@ToString(exclude = "childs")
+public class Parent {
     @Id
-    @Column(name = "team_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "PARENT_ID")
     private Long id;
+
     @Column(nullable = false)
     private String name;
-    
-    // 빌더로 객체생성시 list 해달라고 
-    @Builder.Default
-    @OneToMany(mappedBy = "team")
-    private List<TeamMember> members = new ArrayList<>();
 
-    public void changeName(String name) {
-        this.name = name;
-    }
+    @Builder.Default
+    @OneToMany(mappedBy = "parent")
+    private List<Child> childs = new ArrayList<>();
 }
