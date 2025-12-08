@@ -33,9 +33,8 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "itemtbl")
-@EntityListeners(value = AuditingEntityListener.class)
 @Entity
-public class Item {
+public class Item extends BaseEntity{
    
     @Id
     private String code;
@@ -56,11 +55,7 @@ public class Item {
     @Enumerated(EnumType.STRING)
     private ItemSellStatus itemSellStatus;
     
-    @CreatedDate
-    private LocalDateTime createDate;
-
-    @LastModifiedDate
-    private LocalDateTime updateDate;
+    
     
     public void changeSelStatus(ItemSellStatus itemSellStatus){
         this.itemSellStatus = itemSellStatus;

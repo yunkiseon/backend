@@ -1,45 +1,51 @@
-package com.example.jpa.entity;
+package com.example.mart.entity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 @Builder
-@Getter
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
-@ToString(exclude = "childs")
-public class Parent {
+@ToString(exclude = "orders")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "mart_member")
+public class Member extends BaseEntity{
+    // id, name, city, street, zipcode
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "PARENT_ID")
     private Long id;
 
     @Column(nullable = false)
     private String name;
+    
+    @Column
+    private String city;
+    
+    @Column
+    private String street;
+    
+    @Column
+    private String zipcode;
 
     @Builder.Default
-    @OneToMany(mappedBy = "parent", cascade = {CascadeType.PERSIST,CascadeType.REMOVE}, orphanRemoval = true)
-    // persist -> 저장하는 시점에
-    // remove 삭제시점에
-    private List<Child> childs = new ArrayList<>();
-    public void changeName(String name) {
-        this.name = name;
-    }
+    @OneToMany(mappedBy = "member")
+    private List<Order> orders = new ArrayList<>();
 
-    
 }

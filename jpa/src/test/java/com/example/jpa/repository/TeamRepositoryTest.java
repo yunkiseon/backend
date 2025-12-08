@@ -5,6 +5,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Commit;
 
 import com.example.jpa.entity.Team;
 import com.example.jpa.entity.TeamMember;
@@ -148,5 +149,36 @@ public class TeamRepositoryTest {
         //  그래서 바로 처리하라는 의미로 fetchType.eager하는 것.
         System.out.println(team);
         // System.out.println(team.getMembers());
+    }
+
+    @Test
+    public void insertCascadeTest(){
+        
+       
+        Team team = Team.builder().name("new").build();
+        team.getMembers().add(TeamMember.builder().name("강감찬").team(team).build());
+        teamRepository.save(team);
+    }
+    @Test
+    public void removeCascadeTest(){
+        teamRepository.deleteById(4L);
+    }
+    @Commit
+    @Transactional
+    @Test
+    public void removeOrphanTest(){
+        Team team = teamRepository.findById(3L).get();
+        team.getMembers().remove(1);
+        teamRepository.save(team);
+    }
+    @Commit
+    @Transactional
+    @Test
+    public void updateCascadeTest(){
+        //dirty checking
+        Team team = teamRepository.findById(5L).get();
+        team.changeName("sunflower");
+        TeamMember teamMember = team.getMembers().get(0);
+        teamMember.changeName("홍시루");
     }
 }

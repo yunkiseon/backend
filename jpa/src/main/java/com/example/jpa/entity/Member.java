@@ -32,10 +32,9 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@EntityListeners(value = AuditingEntityListener.class)
 @Table(name = "membertbl")
 @Entity
-public class Member {
+public class Member extends BaseEntity{
     // 아이디(必), 이름(必), 나이(必), 역할(MEMBER, ADMIN 中 1), 가입일자, 수정일자, 자기소개
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -50,12 +49,6 @@ public class Member {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private RoleType role;
-
-    @CreatedDate
-    private LocalDateTime createDate;
-
-    @LastModifiedDate
-    private LocalDateTime updateDate;
 
     // @Column(length=2000) 
     // 이것 말고도 DB 에서의 개념 중 CLOB/BLOB 라는 개념이 있다. 

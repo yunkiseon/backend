@@ -26,10 +26,9 @@ import lombok.ToString;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EntityListeners(value = AuditingEntityListener.class)
 @Entity
 @Table(name = "boardtbl")
-public class Board {
+public class Board extends BaseEntity{
     // 자동순번 id, 제목 title, 내용 content-1500, 작성자 writer-20, 작성일, 수정일자
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -44,11 +43,6 @@ public class Board {
     @Column(nullable = false, length = 20)
     private String writer;
 
-    @CreatedDate
-    private LocalDateTime createDate;
-
-    @LastModifiedDate
-    private LocalDateTime updateDate;
     
     public void changeTitle(String title){
     this.title = title;

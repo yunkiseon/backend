@@ -1,12 +1,10 @@
-package com.example.jpa.entity;
+package com.example.mart.entity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,31 +14,34 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
-@ToString(exclude = "members")
-// @ToString
 @Builder
-@AllArgsConstructor
 @Getter
-@Table(name = "teamtbl")
-@Entity
+@Setter
+@ToString(exclude = "orderItems")
 @NoArgsConstructor
-
-public class Team {
+@AllArgsConstructor
+@Entity
+@Table(name = "mart_item")
+public class Item {
+    //id, name, price, quantity
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "team_id")
     private Long id;
+
     @Column(nullable = false)
     private String name;
-    
-    // 빌더로 객체생성시 list 해달라고 
-    @Builder.Default
-    @OneToMany(mappedBy = "team", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
-    private List<TeamMember> members = new ArrayList<>();
 
-    public void changeName(String name) {
-        this.name = name;
-    }
+    @Column(nullable = false)
+    private int price;
+
+    @Column(nullable = false)
+    private int quantity;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "item")
+    private List<OrderItem> orderItems = new ArrayList<>();
+
 }

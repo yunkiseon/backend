@@ -24,10 +24,9 @@ import lombok.ToString;
 @NoArgsConstructor
 @Getter
 @ToString
-@EntityListeners(value = AuditingEntityListener.class)
 @Entity
 @Table(name = "memotbl")
-public class Memo {
+public class Memo extends BaseEntity{
     // 테이블 (memotbl)컬럼 : mno,  momo_text, 작성날짜-> create_date, update_date
     // 클래스 필드명 == 테이블 컬럼명 or != 테이블 컬럼명(@Column(name=""))
     // id를 mno, 하나씩 증가
@@ -40,11 +39,6 @@ public class Memo {
     @Column(nullable = false, name = "memoText")
     private String text;
 
-    @CreatedDate
-    private LocalDateTime createDate;
-
-    @LastModifiedDate
-    private LocalDateTime updateDate;
 
     //text 수정 메소드
     public void changeText(String text){

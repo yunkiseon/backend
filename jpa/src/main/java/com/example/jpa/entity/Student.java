@@ -27,7 +27,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 // @SequenceGenerator(name = "stu_seq_gen", sequenceName = "stu_seq", allocationSize = 1)
-@EntityListeners(value = AuditingEntityListener.class)
 @Builder
 @Table(name="stutbl")
 @Entity
@@ -35,7 +34,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Student {
+public class Student extends BaseEntity{
     // @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -59,11 +58,6 @@ public class Student {
     @CreationTimestamp
     private LocalDateTime createDateTime1;//create_date_time1 datetime(6), -> hibernate함수
     
-    @CreatedDate
-    private LocalDateTime createDateTime2;//create_date_time2 datetime(6), -> springframework 함수
-
-    @LastModifiedDate // springboot 설정 후 삽입
-    private LocalDateTime updateDateTime;
 
     public void changeName(String name) {
         this.name = name;
