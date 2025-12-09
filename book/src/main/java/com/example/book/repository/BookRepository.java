@@ -12,4 +12,16 @@ public interface BookRepository extends JpaRepository<Book,Long>{
     // 그래서 Containing 을 붙여야함
     Optional<Book> findByIsbn(String isbn);
     List<Book> findByTitleContaining(String title);
+    // where author = ''
+    List<Book> findByAuthor(String author);
+    // where author like "%영" jpa querymethods 참고
+    List<Book> findByAuthorEndingWith(String author);
+    // where author like "박%"
+    List<Book> findByAuthorStartingWith(String author);
+    // where author like "%진수%"
+    List<Book> findByAuthorContaining(String author);
+    
+    // 도서가격이  12000 이상 35000 이하
+    List<Book> findByPriceBetween(int startPrice, int endPrice);
+    
 }

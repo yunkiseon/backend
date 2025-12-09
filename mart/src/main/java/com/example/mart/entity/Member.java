@@ -48,4 +48,8 @@ public class Member extends BaseEntity{
     @OneToMany(mappedBy = "member")
     private List<Order> orders = new ArrayList<>();
 
+    public void changeCity(String city){
+        this.city = city;
+    }
+
 }

@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.memo.dto.MemoDTO;
 import com.example.memo.entity.Memo;
@@ -19,6 +20,7 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor//자동으로 생성자 생성
 @Log4j2
 @Service
+@Transactional
 public class MemoService {
     
     // @Autowired
@@ -31,6 +33,7 @@ public class MemoService {
 
     // memo 전체 조회
 
+    @Transactional(readOnly = true)
     public List<MemoDTO> readAll(){
         List<Memo> memos = memoRespository.findAll();
         // entity는 service에서 repository로 넘길 때, 혹은 repository 에서 service로 받을 때만 쓰고 싶다.
@@ -59,6 +62,7 @@ public class MemoService {
         return list;
 
     }
+    @Transactional(readOnly = true)
     public MemoDTO read(Long id){
     //  Memo memo = memoRespository.findById(id).get(); 아래와 동일
     // Optional<Memo> result = memoRespository.findById(id);
@@ -77,8 +81,8 @@ public class MemoService {
         // 변경
         memo.changeText(dto.getText());
         // memoRespository.save(memo);
-        // return memo.getId();
-        return memoRespository.save(memo).getId();
+        // return memoRespository.save(memo).getId();
+        return memo.getId();
     }
     public void remove(Long id){
         memoRespository.deleteById(id);

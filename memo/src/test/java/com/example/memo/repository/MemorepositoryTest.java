@@ -42,7 +42,7 @@ public class MemorepositoryTest {
 
     @Test
     public void readTest(){
-        Memo memo = memoRespository.findById(3L).get();
+        Memo memo = memoRespository.findById(1L).get();
         System.out.println(memo);
     }
     @Test

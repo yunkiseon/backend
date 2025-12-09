@@ -15,29 +15,25 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Builder
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString(exclude = {"order", "item"})
+@Builder
 @Getter
 @Setter
-public class OrderItem {
-    // id, orderPrice, count
+@ToString(exclude = {"category", "item"})
+@NoArgsConstructor
+@AllArgsConstructor
+public class CategoryItem {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "category_item_id")
     private Long id;
 
-    @Column(nullable = false)
-    private int orderPrice;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "category_id")
+    private Category category;
 
-    @Column(nullable = false)
-    private int count;
-
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private Order order;
-
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "item_id")
     private Item item;
 }
