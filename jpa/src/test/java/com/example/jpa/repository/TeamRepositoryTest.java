@@ -1,5 +1,6 @@
 package com.example.jpa.repository;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -180,5 +181,49 @@ public class TeamRepositoryTest {
         team.changeName("sunflower");
         TeamMember teamMember = team.getMembers().get(0);
         teamMember.changeName("홍시루");
+    }
+
+    //query 테스트
+    @Test
+    public void testQuery(){
+        Team team = teamRepository.findById(3L).get();
+        List<Object[]> result = teamMemberRepository.findByMemberAndTeam(team);
+
+        for (Object[] objects : result) {
+            // System.out.println(Arrays.toString(objects)); 이것도 되지만
+            // object의 값은 결국 teamMember 들이기 때문에 아래도 가능
+            TeamMember teamMember = (TeamMember) objects[0];
+            Team team1 = (Team) objects[1];
+            System.out.println(teamMember);
+            System.out.println(team1);
+        }
+    }
+    @Test
+    public void testQuery2(){
+        Team team = teamRepository.findById(3L).get();
+        List<Object[]> result = teamMemberRepository.findByMemberAndTeam2(team.getId());
+
+        for (Object[] objects : result) {
+            // System.out.println(Arrays.toString(objects)); 이것도 되지만
+            // object의 값은 결국 teamMember 들이기 때문에 아래도 가능
+            TeamMember teamMember = (TeamMember) objects[0];
+            Team team1 = (Team) objects[1];
+            System.out.println(teamMember);
+            System.out.println(team1);
+        }
+    }
+    @Test
+    public void testQuery3(){
+        Team team = teamRepository.findById(3L).get();
+        List<Object[]> result = teamMemberRepository.findByMemberAndTeam3();
+
+        for (Object[] objects : result) {
+            // System.out.println(Arrays.toString(objects)); 이것도 되지만
+            // object의 값은 결국 teamMember 들이기 때문에 아래도 가능
+            TeamMember teamMember = (TeamMember) objects[0];
+            Team team1 = (Team) objects[1];
+            System.out.println(teamMember);
+            System.out.println(team1);
+        }
     }
 }

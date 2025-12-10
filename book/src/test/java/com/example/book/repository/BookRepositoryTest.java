@@ -8,8 +8,12 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import com.example.book.entity.constant.Book;
+import com.example.book.entity.constant.QBook;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -88,6 +92,40 @@ public class BookRepositoryTest {
         list = bookRepository.findByPriceBetween(12000, 35000);
         System.out.println("findByPriceBetween 실행결과" + list);
         
+        
+    }
+
+
+    //-----------querydsl 라이브러리 추가,  QuerydslPredicateExecutor<Book> 상속 이후
+    // findbytitle query 작성 없이 title로 검색 가능
+    @Test
+    public void querydslTest(){
+        QBook book = QBook.book;
+        // 
+        System.out.println(bookRepository.findAll(book.title.eq("파워 자바")));
+        System.out.println(bookRepository.findAll(book.title.contains("파워")));
+        System.out.println(bookRepository.findAll(book.title.contains("파워").and(book.id.gt(3L))));
+        System.out.println(bookRepository.findAll(book.title.contains("파워").and(book.id.gt(3L)),Sort.by("id").descending()));
+        //where author %천% or title= %파워%
+        System.out.println(bookRepository.findAll(book.title.contains("파워").or(book.author.contains("천"))));
+        
+        // bookRepository.findAll(pageable) 페이지 나누기
+        // limit ?,? 를 알아서 잡아줌
+        // select count(): 전체 행 개수 세어줌
+        PageRequest pageRequest = PageRequest.of(0, 20);
+        Page<Book> result = bookRepository.findAll(book.id.gt(0L),pageRequest);
+        
+    }
+    
+    // 아래는 위의 페이지 나누기에서 사용할 pageReuest를 위한 개념 학습임, querydsl과 관계x
+    @Test
+    public void pageTest(){
+        PageRequest pageRequest = PageRequest.of(0, 20);
+        Page<Book> result = bookRepository.findAll(pageRequest);
+        System.out.println("page size"+result.getSize());
+        System.out.println("TotalPages"+result.getTotalPages());
+        System.out.println("TotalElements"+result.getTotalElements());
+        System.out.println("Content"+result.getContent());
         
     }
 }

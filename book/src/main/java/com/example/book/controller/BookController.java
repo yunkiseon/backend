@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.book.dto.BookDTO;
+import com.example.book.dto.PageRequestDTO;
+import com.example.book.dto.PageResultDTO;
 import com.example.book.service.BookService;
 
 import jakarta.validation.Valid;
@@ -52,10 +54,12 @@ public class BookController {
     
     
     @GetMapping("/list")
-    public void getList(Model model) {
+    public void getList(Model model, PageRequestDTO pageRequestDTO
+
+    ) {
         log.info("목록화면 보여주기");
-        List<BookDTO> list = bookService.getList();
-        model.addAttribute("list", list);
+        PageResultDTO<BookDTO> result = bookService.getList(pageRequestDTO);
+        model.addAttribute("result", result);
     }
     
     @GetMapping({"/read", "/modify"})

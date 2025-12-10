@@ -1,13 +1,19 @@
 package com.example.book.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
 import com.example.book.entity.constant.Book;
+import com.example.book.entity.constant.QBook;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Predicate;
+
 import java.util.List;
 import java.util.Optional;
 
 
-public interface BookRepository extends JpaRepository<Book,Long>{
+public interface BookRepository extends JpaRepository<Book,Long>, QuerydslPredicateExecutor<Book> {
+    //querydsl 은 interface임
     // findby~는  모두 == 의 의미만 가진다. where title = '자바' 식으로 말이다. like가 아님
     // 그래서 Containing 을 붙여야함
     Optional<Book> findByIsbn(String isbn);
@@ -23,5 +29,14 @@ public interface BookRepository extends JpaRepository<Book,Long>{
     
     // 도서가격이  12000 이상 35000 이하
     List<Book> findByPriceBetween(int startPrice, int endPrice);
+
+    public default Predicate makePredicate(String type, String keyword){
+        BooleanBuilder builder = new BooleanBuilder();
+        QBook book = QBook.book;
+
+        builder.and(book.id.gt(0));//where b.id > 0
+        return builder;
+
+    }
     
 }

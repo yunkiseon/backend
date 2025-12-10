@@ -1,5 +1,6 @@
 package com.example.jpa.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -50,5 +51,50 @@ public class BoardRepositoryTest {
     @Test
     public void deleteTest(){
         boardRespository.deleteById(5l);
+    }
+
+    // findby
+    @Test
+    public void findby(){
+        List<Board> list = boardRespository.findByTitle("타이틀1");
+        System.out.println(list);
+        list = boardRespository.findByContent("붕어빵 맛있음");
+        System.out.println(list);
+        list = boardRespository.findByWriterContaining("홍길동");
+        System.out.println(list);
+        list = boardRespository.findByTitleEndingWith("2");
+        System.out.println(list);
+        list= boardRespository.findByTitleContainingAndIdGreaterThanOrderByIdDesc("타이틀",1L);
+        System.out.println(list);
+        list = boardRespository.findByTitleContainingOrContentContaining("타이틀", "슈붕");
+    }
+
+    @Test
+    public void findby2(){
+        List<Board> list = boardRespository.findByTitle2("타이틀1");
+        System.out.println(list);
+        list = boardRespository.findByContent2("붕어빵 맛있음");
+        System.out.println(list);
+        list = boardRespository.findByWriterContaining2("홍길동");
+        System.out.println(list);
+        list = boardRespository.findByTitleEndingWith2("2");
+        System.out.println(list);
+        list= boardRespository.findByTitleAndId("타이틀",1L);
+        System.out.println(list);
+        list = boardRespository.findByTitleOrContent("타이틀", "슈붕");
+        
+    }
+    @Test
+    public void findby3(){
+        System.out.println(boardRespository.findByTitleAndId2("타이틀", 3L));
+    }
+    @Test
+    public void findby4(){
+        List<Object[]> result = boardRespository.findByTitleConta3("타이틀");
+        for (Object[] objects : result) {
+            String title =(String) objects[0];
+            String writer =(String) objects[1];
+            System.out.println(title + "  " +writer);
+        }
     }
 }
