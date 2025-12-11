@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/layout}">
+  <div layout:fragment="content">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title fw-semibold mb-4">도서 등록</h5>
+        <div class="card">
+          <div class="card-body">
+            <form action="" method="post" th:object="${bookDTO}">
+              <div class="mb-3">
+                <label for="isbn" class="form-label">ISBN</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="isbn"
+                  aria-describedby="isbn"
+                  name="isbn"
+                  th:value="${bookDTO.isbn}"
+                />
+                <div
+                  class="text-danger"
+                  th:if="${#fields.hasErrors('isbn')}"
+                  th:errors="*{isbn}"
+                ></div>
+              </div>
+              <div class="mb-3">
+                <label for="title" class="form-label">TITLE</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="title"
+                  name="title"
+                  th:value="${bookDTO.title}"
+                />
+                <div
+                  class="text-danger"
+                  th:if="${#fields.hasErrors('title')}"
+                  th:errors="*{title}"
+                ></div>
+              </div>
+              <div class="mb-3">
+                <label for="author" class="form-label">AUTHOR</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="author"
+                  name="author"
+                  th:value="${bookDTO.author}"
+                />
+                <div
+                  class="text-danger"
+                  th:if="${#fields.hasErrors('author')}"
+                  th:errors="*{author}"
+                ></div>
+              </div>
+              <div class="mb-3">
+                <label for="price" class="form-label">PRICE</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="price"
+                  name="price"
+                  th:value="${bookDTO.price}"
+                />
+                <div
+                  class="text-danger"
+                  th:if="${#fields.hasErrors('price')}"
+                  th:errors="*{price}"
+                ></div>
+              </div>
+              <div class="mb-3">
+                <label for="description" class="form-label">DESCRIPTION</label>
+                <textarea
+                  type="text"
+                  class="form-control"
+                  id="description"
+                  name="description"
+                  rows="3"
+                  th:value="${bookDTO.description}"
+                >
+                [[${bookDTO.description}]]
+                </textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</html>

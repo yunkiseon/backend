@@ -30,11 +30,21 @@ public interface BookRepository extends JpaRepository<Book,Long>, QuerydslPredic
     // 도서가격이  12000 이상 35000 이하
     List<Book> findByPriceBetween(int startPrice, int endPrice);
 
+
     public default Predicate makePredicate(String type, String keyword){
         BooleanBuilder builder = new BooleanBuilder();
         QBook book = QBook.book;
 
         builder.and(book.id.gt(0));//where b.id > 0
+
+        if (type == null) {
+            return builder;
+        }
+        if (type.equals("t")) {
+            builder.and(book.title.contains(keyword));
+        } else {
+            builder.and(book.author.contains(keyword));
+        }
         return builder;
 
     }

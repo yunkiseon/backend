@@ -34,14 +34,14 @@ public class BookController {
 
 
     @GetMapping("/register")
-    public void getRegister(BookDTO bookDTO) {
+    public void getRegister(BookDTO bookDTO, PageRequestDTO pageRequestDTO) {
         log.info("등록화면 보여주기");
         // 만약 @ModelAttribute(dto)를 BookDTO 옆에 넣고 Post에서도 동일하게하면
         // register에서 obj bookDTO가 아닌 dto로, 밸류값 등에서도 dto.~ 하면된다.
     }
 
     @PostMapping("/register")
-    public String postRegister(@Valid BookDTO dto, BindingResult result, RedirectAttributes rttr) {
+    public String postRegister(@Valid BookDTO dto, BindingResult result, PageRequestDTO pageRequestDTO, RedirectAttributes rttr) {
        log.info("회원가입 요청");
         
         if (result.hasErrors()) {
@@ -49,6 +49,8 @@ public class BookController {
         }
         String title = bookService.create(dto);
         rttr.addFlashAttribute("msg", title + "도서가 등록되었습니다.");
+        rttr.addAttribute("page", pageRequestDTO.getPage());
+        rttr.addAttribute("size", pageRequestDTO.getSize());
         return "redirect:/book/list";
     }
     
@@ -61,16 +63,17 @@ public class BookController {
         PageResultDTO<BookDTO> result = bookService.getList(pageRequestDTO);
         model.addAttribute("result", result);
     }
-    
+    // list html에서 정보를 추가적으로 result.current와 size를 보내게되었다.
+    // ModelAttribute로 이름바꿀 수 있음
     @GetMapping({"/read", "/modify"})
-    public void getRead(@RequestParam Long id, Model model) {
-        log.info("도서 상세 조회 {}", id);
+    public void getRead(@RequestParam Long id, PageRequestDTO pageRequestDTO,Model model) {
+        log.info("도서 상세 조회 {}", id, pageRequestDTO);
         BookDTO dto = bookService.readId(id);
         model.addAttribute("dto", dto);
     }
     @PostMapping("/modify")
-    public String postModify(BookDTO dto , RedirectAttributes rttr) {
-        log.info("도서 수정 {}", dto);
+    public String postModify(BookDTO dto , PageRequestDTO pageRequestDTO,RedirectAttributes rttr) {
+        log.info("도서 수정 {}", dto, pageRequestDTO);
         Long id = bookService.update(dto);
         // 위 코드가 된다는 것은 dto 안에 id가 있고 그것을 꺼내준다는 것이다. 그렇기때문에
         // 주소창에 넣을 때 쉽게 id 정보만 쓸 수 있다.
@@ -78,13 +81,17 @@ public class BookController {
         // 때문에 modifyhtml에 안보이는 id 값을 넣어주었다. 
         rttr.addFlashAttribute("msg", "도서 정보가 수정되었습니다.");
         rttr.addAttribute("id", id);
+        rttr.addAttribute("page", pageRequestDTO.getPage());
+        rttr.addAttribute("size", pageRequestDTO.getSize());
         return "redirect:/book/read";
     }
     
     @PostMapping("/remove")
-    public String postRemove(@RequestParam("id") Long id, RedirectAttributes rttr) {
+    public String postRemove(@RequestParam("id") Long id, PageRequestDTO pageRequestDTO, RedirectAttributes rttr) {
         bookService.delete(id);
         rttr.addFlashAttribute("msg", "도서가 삭제되었습니다.");
+        rttr.addAttribute("page", pageRequestDTO.getPage());
+        rttr.addAttribute("size", pageRequestDTO.getSize());
         return "redirect:/book/list";
     }
     

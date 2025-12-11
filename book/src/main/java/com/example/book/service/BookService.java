@@ -84,7 +84,7 @@ public class BookService {
     public PageResultDTO<BookDTO> getList(PageRequestDTO pageRequestDTO){
         // pageNumber : 0으로 시작(1page개념)
         Pageable pageable = PageRequest.of(pageRequestDTO.getPage() -1, pageRequestDTO.getSize(), Sort.by("id").descending());
-        Page<Book> result = bookRepository.findAll(bookRepository.makePredicate(null, null),pageable);
+        Page<Book> result = bookRepository.findAll(bookRepository.makePredicate(pageRequestDTO.getType(), pageRequestDTO.getKeyword()),pageable);
         List<BookDTO> dtoList = result.get()//이 get() 은  Stream<Book> stream으로 바꾸어 돌려준다.
         .map(book -> mapper.map(book, BookDTO.class)).collect(Collectors.toList());
 
@@ -93,7 +93,7 @@ public class BookService {
         // 원래는 dto에 빌더를 해야하지만....
         return PageResultDTO.<BookDTO>withAll()
         .dtoList(dtoList)
-        .pageRequestDto(pageRequestDTO)
+        .pageRequestDTO(pageRequestDTO)
         .totalCount(totalCount)
         .build();
     }

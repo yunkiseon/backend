@@ -29,6 +29,18 @@ public class BookServiceTest {
         System.out.println("전체 행의 개수"+result.getTotalCount());
         System.out.println("전체 페이지 수"+result.getTotalPage());
         System.out.println("하단에 보여줄 페이지 목록"+result.getPageNumList());
-    
+    }
+    @Test
+    public void querydslTest2(){
+        PageRequestDTO dto = PageRequestDTO.builder()
+        .page(1)
+        .size(10)
+        .type("t")
+        .keyword("붕어빵")
+        .build();
+        PageResultDTO<BookDTO> result = bookService.getList(dto);
+
+        System.out.println(result.getDtoList());
+        System.out.println("검색결과 행 개수 : " + result.getTotalCount());
     }
 }

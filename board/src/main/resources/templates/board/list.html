@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{layouts/layout}">
+  <div layout:fragment="content">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="card-title fw-semibold mb-4">List</h5>
+
+          <form action="" method="get" class="d-flex align-items-center gap-2" id="actionForm">
+            <input type="hidden" name="page" th:value="${pageRequestDTO.page}" />
+            <input type="hidden" name="size" th:value="${pageRequestDTO.size}" />
+            <select name="type" class="form-select" style="width: 120px">
+              <option value="" th:selected="${pageRequestDTO.type == null}">선택</option>
+              <option value="t" th:selected="${pageRequestDTO.type == 't'}">제목</option>
+              <option value="a" th:selected="${pageRequestDTO.type == 'a'}">저자</option>
+            </select>
+            <input
+              type="text"
+              name="keyword"
+              class="form-control"
+              style="width: 200px"
+              th:value="${pageRequestDTO.keyword}"
+            />
+            <button type="submit" class="btn btn-primary">검색</button>
+          </form>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">번호</th>
+              <th scope="col">제목</th>
+              <th scope="col">작성자</th>
+              <th scope="col">작성일</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="dto : ${result.dtoList}">
+              <th scope="row" th:text="${dto.isbn}"></th>
+              <td>
+                <a
+                  th:href="@{/book/read(id=${dto.id},page=${result.current}, size=${result.pageRequestDTO.size}, type=${result.pageRequestDTO.type},keyword=${result.pageRequestDTO.keyword})}"
+                  th:text="${dto.title}"
+                ></a>
+              </td>
+              <td th:text="${dto.price}"></td>
+              <td th:text="${dto.author}"></td>
+              <td th:text="${dto.description}"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!--페이지 나누기
+      눌린 페이지를 active가 되고 파란박스가 됨
+      <li class="page-item disabled"> 대신
+      <li class="page-item" th:classappend="${!result.prev}?'disabled">  대체가능
+        th:href=@{list(page=${page})
+        th:href=@{/book/list(page=${page}) 의 차이는 현재 페이지(book)에 뒤에 붙일것이냐, 아니면 직접 경로를 걸것이냐의 차이
+
+      -->
+      <nav aria-label="...">
+        <ul class="pagination justify-content-center">
+          <li class="page-item" th:classappend="${!result.prev}?'disabled'">
+            <a
+              class="page-link"
+              th:href="@{list(page=${result.prevPage}, size=${result.pageRequestDTO.size}, type=${result.pageRequestDTO.type},keyword=${result.pageRequestDTO.keyword})}"
+              >Previous</a
+            >
+          </li>
+
+          <li
+            th:class="'page-item '+${result.current == page?'active':''}"
+            th:each="page : ${result.pageNumList}"
+          >
+            <a
+              class="page-link"
+              th:href="@{list(page=${page}, size=${result.pageRequestDTO.size}, type=${result.pageRequestDTO.type},keyword=${result.pageRequestDTO.keyword})}"
+              aria-current="page"
+              >[[${page}]]</a
+            >
+          </li>
+
+          <li class="page-item" th:classappend="${!result.next}?'disabled'">
+            <a
+              class="page-link"
+              th:href="@{list(page=${result.nextPage}, size=${result.pageRequestDTO.size}, type=${result.pageRequestDTO.type},keyword=${result.pageRequestDTO.keyword})}"
+              >Next</a
+            >
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+  <th:block layout:fragment="script">
+    <!--리다이렉트 시 메세지 보내기-->
+    <script th:inline="javascript">
+      let msg = [[${msg}]];
+      console.log(msg);
+      if (msg) {
+        Swal.fire({
+          title:  msg,
+          icon: "success",
+          draggable: true,
+        });
+      }
+    </script>
+    <script th:src="@{/js/list.js}"></script>
+  </th:block>
+</html>
