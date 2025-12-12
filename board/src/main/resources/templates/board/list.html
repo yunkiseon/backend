@@ -35,16 +35,15 @@
           </thead>
           <tbody>
             <tr th:each="dto : ${result.dtoList}">
-              <th scope="row" th:text="${dto.isbn}"></th>
+              <th scope="row" th:text="${dto.bno}"></th>
               <td>
                 <a
-                  th:href="@{/book/read(id=${dto.id},page=${result.current}, size=${result.pageRequestDTO.size}, type=${result.pageRequestDTO.type},keyword=${result.pageRequestDTO.keyword})}"
-                  th:text="${dto.title}"
-                ></a>
+                  th:href="@{/board/read(bno=${dto.bno},page=${result.current}, size=${result.pageRequestDTO.size}, type=${result.pageRequestDTO.type},keyword=${result.pageRequestDTO.keyword})}"
+                  >[[${dto.title}]]---[<b th:text="${dto.replyCnt}"></b>]</a
+                >
               </td>
-              <td th:text="${dto.price}"></td>
-              <td th:text="${dto.author}"></td>
-              <td th:text="${dto.description}"></td>
+              <td th:text="${dto.writerName}"></td>
+              <td th:text="${#temporals.format(dto.createDateTime2, 'yyyy-MM-dd HH:mm')}"></td>
             </tr>
           </tbody>
         </table>

@@ -1,7 +1,11 @@
 package com.example.board.post.entity;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.example.board.member.entity.Member;
+import com.example.board.reply.entity.Reply;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,7 +24,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Getter
-@ToString(exclude = "writer")
+@ToString(exclude = {"writer", "replies"})
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -42,6 +47,12 @@ public class Board extends BaseEntity{
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "email")
     private Member writer;
+
+    // board -> reply
+
+    @Builder.Default
+    @OneToMany(mappedBy = "board")
+    private List<Reply> replies = new ArrayList<>();
     
     public void changeTitle(String title){
     this.title = title;

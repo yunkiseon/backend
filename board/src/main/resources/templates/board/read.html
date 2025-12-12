@@ -3,19 +3,19 @@
   <div layout:fragment="content">
     <div class="card">
       <div class="card-body">
-        <h5 class="card-title fw-semibold mb-4">도서조회</h5>
+        <h5 class="card-title fw-semibold mb-4">게시글 조회</h5>
         <div class="card">
           <div class="card-body">
             <form action="" method="post">
               <div class="mb-3">
-                <label for="isbn" class="form-label">ISBN</label>
+                <label for="bno" class="form-label">BNO</label>
                 <input
                   type="text"
                   class="form-control"
-                  id="isbn"
-                  aria-describedby="isbn"
-                  name="isbn"
-                  th:value="${dto.isbn}"
+                  id="bno"
+                  aria-describedby="bno"
+                  name="bno"
+                  th:value="${dto.bno}"
                   readonly
                 />
               </div>
@@ -31,54 +31,35 @@
                 />
               </div>
               <div class="mb-3">
-                <label for="author" class="form-label">AUTHOR</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="author"
-                  name="author"
-                  th:value="${dto.author}"
-                  readonly
-                />
-              </div>
-              <div class="mb-3">
-                <label for="price" class="form-label">PRICE</label>
-                <input
-                  type="number"
-                  class="form-control"
-                  id="price"
-                  name="price"
-                  th:value="${dto.price}"
-                  readonly
-                />
-              </div>
-              <div class="mb-3">
-                <label for="description" class="form-label">DESCRIPTION</label>
-                <textarea
-                  type="text"
-                  class="form-control"
-                  id="description"
-                  name="description"
-                  rows="3"
-                  th:value="${dto.description}"
-                  readonly
+                <label for="content" class="form-label">CONTENT</label>
+                <textarea name="content" id="content" rows="10" class="form-control">
+[[${dto.content}]]</textarea
                 >
-                [[${dto.description}]]
-                </textarea>
+              </div>
+              <div class="mb-3">
+                <label for="createDate" class="form-label">CREATEADTE</label>
+                <input
+                  type="type"
+                  class="form-control"
+                  id="createDateTime2"
+                  name="createDateTime2"
+                  th:value="${#temporals.format(dto.createDateTime2, 'yyyy-MM-dd HH:mm')}"
+                  readonly
+                />
               </div>
               <a
                 type="button"
                 class="btn btn-primary"
-                th:href="@{/book/list(page=${pageRequestDTO.page}, size=${pageRequestDTO.size})}"
+                th:href="@{/board/list(page=${pageRequestDTO.page}, size=${pageRequestDTO.size})}"
                 >목록</a
               >
               <a
                 type="button"
                 class="btn btn-success"
-                th:href="@{/book/modify(id=${dto.id},page=${pageRequestDTO.page}, size=${pageRequestDTO.size})}"
+                th:href="@{/board/modify(bno=${dto.bno},page=${pageRequestDTO.page}, size=${pageRequestDTO.size})}"
                 >수정</a
               >
-              <input type="hidden" name="page" th:value="${pageRequestDTO.page}" />
+              <!-- <input type="hidden" name="page" th:value="${pageRequestDTO.page}" /> -->
             </form>
           </div>
         </div>
