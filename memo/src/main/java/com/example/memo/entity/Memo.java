@@ -38,9 +38,12 @@ public class Memo {
     private String text;
 
     @CreatedDate
+    @Column(name = "createDate")
     private LocalDateTime createDate;
 
+    
     @LastModifiedDate
+    @Column(name = "updateDate")
     private LocalDateTime updateDate;
 
     //text 수정 메소드

@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.example.memo.entity.Memo;
 
-@Disabled
+
 @SpringBootTest
 public class MemorepositoryTest {
     

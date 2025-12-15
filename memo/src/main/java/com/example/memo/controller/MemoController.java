@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,8 +14,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.memo.dto.MemoDTO;
@@ -43,6 +47,23 @@ public class MemoController {
     //     this.memoRespository = memoRespository;
     // }
 
+    @ResponseBody//리턴값이 데이터임을 알려줌
+    @GetMapping("/hello")
+    public String getHello() {
+        return "Hello World";//문자열은 브라우저가 해석할 수 있다. 
+    }
+    @ResponseBody
+    @GetMapping("/sample1/{id}")
+    public MemoDTO getRead(@PathVariable("id") Long id) {
+        MemoDTO dto = memoService.read(id);
+        return dto;
+    }
+    // responseEntity : 데이터 + 상태코드(200, 400, 500)
+    @GetMapping("/sample1/list")
+    public ResponseEntity<List<MemoDTO>> getRead2() {
+        List<MemoDTO> list = memoService.readAll();
+        return new ResponseEntity<>(list,HttpStatus.BAD_REQUEST);
+    }
 
     @GetMapping("/list")
     public void getList(Model model) {

@@ -2,6 +2,7 @@ package com.example.board.post.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,10 @@ import com.example.board.post.dto.BoardDTO;
 import com.example.board.post.dto.PageRequestDTO;
 import com.example.board.post.dto.PageResultDTO;
 import com.example.board.post.service.BoardService;
+
+import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -26,6 +31,29 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class PostController {
     
     private final BoardService boardService;
+
+    //유효성 검증 +데이터 도착
+    //유효성->dto에 notblank, null
+    @GetMapping("/create")
+    public void getCreate(PageRequestDTO pageRequestDTO, BoardDTO dto) {
+        log.info("작성 폼 요청");
+    }
+    
+    @PostMapping("/create")
+    public String postCreate(@Valid BoardDTO dto, BindingResult result, PageRequestDTO pageRequestDTO, RedirectAttributes rttr) {
+       log.info("작성 {}", dto);
+       if (result.hasErrors()) {
+        return "board/create";
+       } 
+       Long bno = boardService.insert(dto);
+
+
+       rttr.addFlashAttribute("msg", bno + "번 게시글 등록이 완료되었습니다.");
+       
+        return "redirect:/board/list";
+    }
+    
+    
 
     @GetMapping("/list")
     public void getList(PageRequestDTO pageRequestDTO, Model model) {

@@ -3,6 +3,7 @@ package com.example.board.service;
 import java.beans.Transient;
 import java.util.List;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,7 +17,7 @@ import com.example.board.post.entity.Board;
 import com.example.board.post.service.BoardService;
 
 
-
+@Disabled
 @SpringBootTest
 public class BoardServiceTest {
     

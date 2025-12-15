@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,22 +30,32 @@ import lombok.extern.log4j.Log4j2;
 public class BoardService {
     private final BoardRepository boardRepository;
     private final ReplyRepository replyRepository;
+    private final ModelMapper mapper;
     
     // crud
+
     @Transactional(readOnly = true)
     public PageResultDTO<BoardDTO> getList(PageRequestDTO requestDTO){
         Pageable pageable = PageRequest.of(requestDTO.getPage() -1, requestDTO.getSize(),Sort.by("bno").descending());
         // Page<Board> result = boardRepository.findAll(pageable);
-        Page<Object[]> result = boardRepository.getBoardWithReplyCount(pageable);
+        //쿼리를 사용하였을 때, 아래 코드 사용
+        // Page<Object[]> result = boardRepository.getBoardWithReplyCount(pageable);
         // 서비스는 데이터를 받아서 controller 로 보낼 때 필요한 정보만 선별해서 보내기 + entity -> dto 하는 작업을 한다
+
+        // 새로한 코드
+        Page<Object[]> result = boardRepository.list(requestDTO.getType(), requestDTO.getKeyword(), pageable);
+        log.info("리절트 : " + result);
+
         Function<Object[], BoardDTO> f = en-> entityToDTO((Board) en[0],(Member) en[1],(Long) en[2]);
         List<BoardDTO> dtoList = result.stream().map(f).collect(Collectors.toList());
+        log.info(dtoList);
         long totalCount = result.getTotalElements();
         PageResultDTO<BoardDTO> pageResultDTO = PageResultDTO.<BoardDTO>withAll()
         .dtoList(dtoList)
         .pageRequestDTO(requestDTO)
         .totalCount(totalCount)
         .build();
+        log.info(pageResultDTO);
 
         return pageResultDTO;
     }
@@ -68,7 +79,14 @@ public class BoardService {
         //dirty-checking 돌아서 알아서 save가 호출된다.
 
     }
-    public void insert(BoardDTO dto){
+    public Long insert(BoardDTO dto){
+        Member member = Member.builder().email(dto.getWriterEmail()).build();
+        Board board = Board.builder()
+        .title(dto.getTitle())
+        .content(dto.getContent())
+        .writer(member)
+        .build();
+        return boardRepository.save(board).getBno();
         
     }
     @Transactional
