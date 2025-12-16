@@ -73,7 +73,18 @@ public class BoardRepositoryTest {
             Reply reply = Reply.builder().text("reply...."+i).replyer("guest"+i).board(board).build();
             replyRepository.save(reply);
 
-            
+          
+        });}
+        
+    @Test
+    public void insertReplyTest2(){
+
+        Board board = Board.builder().bno(103L).build();
+
+        IntStream.rangeClosed(1, 15).forEach(i->{
+
+            Reply reply = Reply.builder().text("reply...."+i).replyer("guest"+i).board(board).build();
+            replyRepository.save(reply);            
         });
 
     }

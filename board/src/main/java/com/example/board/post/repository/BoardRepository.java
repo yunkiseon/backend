@@ -27,6 +27,7 @@ public interface BoardRepository extends JpaRepository<Board,Long>, SearchBoardR
     
     // 목록 -> 페이지 나누기 필요 그래서 pageable 쓸 것이라고 미리 알려준다.
     // countQuery는 board의 총 갯수를 세기 위한 것이다. group by로 그룹을 borad 단위로 나누었기 때문에 필요하다.
+    // 처음에만 사용하고 seach 를 위해서 변경
     @Query(value = "select b,m,count(r) from Board b left join b.writer m left join Reply r on r.board = b group by b", 
     countQuery="select count(b) from Board b")
     Page<Object[]> getBoardWithReplyCount(Pageable pageable);

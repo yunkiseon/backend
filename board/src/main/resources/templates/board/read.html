@@ -70,6 +70,7 @@
     <!--리다이렉트 시 메세지 보내기-->
     <script th:inline="javascript">
       let msg = [[${msg}]];
+      let bno = [[${dto.bno}]]
       console.log(msg);
       if (msg) {
         Swal.fire({
@@ -79,5 +80,6 @@
         });
       }
     </script>
+    <script th:src="@{/js/read.js}"></script>
   </th:block>
 </html>

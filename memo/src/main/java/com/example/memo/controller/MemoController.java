@@ -72,9 +72,24 @@ public class MemoController {
         // 여기까지가 service 계층에서 controller 계층으로 가져온 것이며 이제 화면단으로 넘기면 된다. Model에 담아서
         model.addAttribute("list", list);
     }
+
+    @GetMapping("/list2")
+    public void getList2() {
+        log.info("전체 메모 요청");
+    }
+
+    @GetMapping({"/read2", "modify2"})
+    public void getRead3(@RequestParam("id") Long id, Model model) {
+        log.info("특정 메모 요청");
+
+        MemoDTO dto = memoService.read(id);
+        model.addAttribute("dto", dto);
+
+        model.addAttribute("id", id);
+    }
     
     @GetMapping({"/read", "/modify"})
-    public void getRead(@RequestParam Long id, Model model) {
+    public void getRead(@RequestParam("id") Long id, Model model) {
         log.info("memo id {}", id);
         // 하나 조회
         MemoDTO dto = memoService.read(id);
@@ -98,7 +113,7 @@ public class MemoController {
 
 
     @PostMapping("/remove")
-    public String postRemove(@RequestParam Long id, RedirectAttributes rttr) {
+    public String postRemove(@RequestParam("id") Long id, RedirectAttributes rttr) {
         log.info("memo remove id {}", id);
         memoService.remove(id);
         // 삭제 후 목록 보여주기. 기능이 원래 템플릿을 보여주게 되어있다. 
@@ -111,6 +126,10 @@ public class MemoController {
     public String getCreate(@ModelAttribute("dto") MemoDTO dto) {
         log.info("추가 페이지 요청");
         return "/memo/create";
+    }
+    @GetMapping("/create2")
+    public void getCreate2(@ModelAttribute("dto") MemoDTO dto) {
+        log.info("추가 페이지 요청");
     }
     
     @PostMapping("/create")//valid 검증해줘. dto에서 ~을 검증조건.

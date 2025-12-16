@@ -41,4 +41,8 @@ public class Reply extends BaseEntity{
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "bno")
     private Board board;
+
+    public void changeText(String text) {
+        this.text = text;
+    }
 }
