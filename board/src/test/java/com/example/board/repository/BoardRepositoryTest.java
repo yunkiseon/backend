@@ -25,7 +25,7 @@ import com.example.board.post.repository.BoardRepository;
 import com.example.board.reply.entity.Reply;
 import com.example.board.reply.repository.ReplyRepository;
 
-@Disabled
+// @Disabled
 @SpringBootTest
 public class BoardRepositoryTest {
     
@@ -127,41 +127,38 @@ public class BoardRepositoryTest {
         result.forEach(obj -> System.out.println(Arrays.toString(obj)));
     }
 
-    @Test
-    public void getBoardWithReplyCountTest(){
-        Pageable pageable = PageRequest.of(0, 10, Sort.by("bno").descending());
-        Page<Object[]> result = boardRepository.getBoardWithReplyCount(pageable);
-        // for (Object[] objects : result) {
-        //     Board board = (Board) objects[0];
-        //     Member member = (Member) objects[1];
-        //     Long replyCnt = (Long) objects[2];
-        //     System.out.println(board);
-        //     System.out.println(member);
-        //     System.out.println(replyCnt);
-        // }  아래처럼 설정하는 것도 가능
-        // Stream<Object[]> data = result.get();
-        // // getcontent -> 실제 목록
-        // Stream<Object[]> data2 = result.getContent().stream();
-        result.get().forEach(obj->{
-            // System.out.println(Arrays.toString(obj));
-            Board board = (Board) obj[0];
-            Member member = (Member) obj[1];
-            Long replyCnt = (Long) obj[2];
-            // 도 가능
-        });
-        //Arrays.toString(obj) 는 retrun한다.즉 변환이 목적이다 sout은 리턴값이 없다.
-        // 그래서 아래의 과정이 필요하다. 때문에 위의 과정이 훨씬 편리하다.
-        Function<Object[], String> f = Arrays::toString;
-        result.get().forEach(obj -> System.out.println(f.apply(obj)));
+    // @Test
+    // public void getBoardWithReplyCountTest(){
+    //     Pageable pageable = PageRequest.of(0, 10, Sort.by("bno").descending());
+    //     Page<Object[]> result = boardRepository.getBoardWithReplyCount(pageable);
+    //     // for (Object[] objects : result) {
+    //     //     Board board = (Board) objects[0];
+    //     //     Member member = (Member) objects[1];
+    //     //     Long replyCnt = (Long) objects[2];
+    //     //     System.out.println(board);
+    //     //     System.out.println(member);
+    //     //     System.out.println(replyCnt);
+    //     // }  아래처럼 설정하는 것도 가능
+    //     // Stream<Object[]> data = result.get();
+    //     // // getcontent -> 실제 목록
+    //     // Stream<Object[]> data2 = result.getContent().stream();
+    //     result.get().forEach(obj->{
+    //         // System.out.println(Arrays.toString(obj));
+    //         Board board = (Board) obj[0];
+    //         Member member = (Member) obj[1];
+    //         Long replyCnt = (Long) obj[2];
+    //         // 도 가능
+    //     });
+    //     //Arrays.toString(obj) 는 retrun한다.즉 변환이 목적이다 sout은 리턴값이 없다.
+    //     // 그래서 아래의 과정이 필요하다. 때문에 위의 과정이 훨씬 편리하다.
+    //     Function<Object[], String> f = Arrays::toString;
+    //     result.get().forEach(obj -> System.out.println(f.apply(obj)));
 
-
-    
-    }
+    // }
     @Test
     public void getBoardByBnoTest(){
-        Object result = boardRepository.getBoardByBno(84L);
-        Object[] arr = (Object[])result;
-        System.out.println(Arrays.toString(arr));
+        Object[] result = boardRepository.getBoardByBno(103L);
+        System.out.println(Arrays.toString(result));
     }
 
     @Commit

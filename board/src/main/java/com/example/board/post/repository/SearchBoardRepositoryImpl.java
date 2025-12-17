@@ -109,5 +109,24 @@ public class SearchBoardRepositoryImpl extends QuerydslRepositorySupport impleme
         // Page로 보내야, 다른 곳에서 받아서 사용할 수 있다. 
         return new PageImpl<>(list,pageable,count);
     }
+
+    @Override
+    public Object[] getBoardByBno(Long bno) {
+
+        // q클래스
+        QBoard board = QBoard.board;
+        QMember member = QMember.member;
+        QReply reply = QReply.reply;
+
+        
+        JPQLQuery<Board> query = from(board)
+                .leftJoin(member).on(board.writer.eq(member))
+                .leftJoin(reply).on(reply.board.eq(board))
+                .where(board.bno.eq(bno));
+        JPQLQuery<Tuple> tuple = query.select(board,member, reply.count());
+        System.out.println(tuple);
+        Tuple result = tuple.fetchFirst();
+        return result.toArray();
+    }
     
 }

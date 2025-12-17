@@ -21,15 +21,17 @@ public interface BoardRepository extends JpaRepository<Board,Long>, SearchBoardR
     // reply 입장에선 board 가 있다. bno 사용해서 댓글 가져오기
     @Query("select b,r from Board b left join Reply r on r.board = b where b.bno = :bno")
     List<Object[]> getBoardWithReply(@Param("bno") Long bno);
+
+    // 아래는 querydsl 방식으로 변경하면서 안쓰인다.
     // 하나 조회
-    @Query("select b,m,count(r) from Board b left join b.writer m left join Reply r on r.board = b where b.bno = :bno")
-    Object getBoardByBno(@Param("bno") Long bno);
+    // @Query("select b,m,count(r) from Board b left join b.writer m left join Reply r on r.board = b where b.bno = :bno")
+    // Object getBoardByBno(@Param("bno") Long bno);
     
-    // 목록 -> 페이지 나누기 필요 그래서 pageable 쓸 것이라고 미리 알려준다.
-    // countQuery는 board의 총 갯수를 세기 위한 것이다. group by로 그룹을 borad 단위로 나누었기 때문에 필요하다.
-    // 처음에만 사용하고 seach 를 위해서 변경
-    @Query(value = "select b,m,count(r) from Board b left join b.writer m left join Reply r on r.board = b group by b", 
-    countQuery="select count(b) from Board b")
-    Page<Object[]> getBoardWithReplyCount(Pageable pageable);
+    // // // 목록 -> 페이지 나누기 필요 그래서 pageable 쓸 것이라고 미리 알려준다.
+    // // // countQuery는 board의 총 갯수를 세기 위한 것이다. group by로 그룹을 borad 단위로 나누었기 때문에 필요하다.
+    // // // 처음에만 사용하고 seach 를 위해서 변경
+    // @Query(value = "select b,m,count(r) from Board b left join b.writer m left join Reply r on r.board = b group by b", 
+    // countQuery="select count(b) from Board b")
+    // Page<Object[]> getBoardWithReplyCount(Pageable pageable);
     
 } 
