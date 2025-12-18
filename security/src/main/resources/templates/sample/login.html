@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!--시큐리티를 적용할 땐 th:action이 필수이다. csrf 값을 자동으로 생성하기 때문이다-->
+    <form th:action="@{/sample/login}" class="login-form" method="post">
+      <div>
+        <input type="text" name="username" id="" placeholder="userid" />
+      </div>
+      <div>
+        <input type="password" name="password" id="" placeholder="password" />
+      </div>
+      <div>
+        <button type="submit">로그인</button>
+      </div>
+    </form>
+  </body>
+</html>
