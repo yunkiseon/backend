@@ -9,16 +9,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Log4j2
 @Controller
-public class HomeController {
-    
-    @GetMapping("/")
-    public String getHome() {
-        return "home";
+public class AdminController {
+    @GetMapping("/admin/manage")
+    public void getAdmin() {
+        log.info("admin 요청");
     }
-    @GetMapping("/manager/info")
-    public void getManager() {
-        
-    }
-    
     
 }

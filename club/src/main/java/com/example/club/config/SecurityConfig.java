@@ -15,6 +15,8 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import com.example.club.handler.LoginSuccessHandler;
+
 import lombok.extern.log4j.Log4j2;
 
 // 시큐리티 설정 클래스
@@ -28,12 +30,16 @@ public class SecurityConfig{
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         // 모두 막힌 상황이라면 temple 도 제대로 로딩 되지 않는다. 그래서 이 부분은 풀어줄 필요가 있다.
         http.authorizeHttpRequests(authorize -> authorize
-            .requestMatchers("/","/assets/**").permitAll()
-            .requestMatchers("/sample/member").hasRole("MEMBER")
-            .requestMatchers("/sample/admin").hasRole("ADMIN")
+            .requestMatchers("/","/assets/**", "/member/auth", "/img/**", "/assets/images/**").permitAll()
+            .requestMatchers("/member/**").hasRole("USER")
+            .requestMatchers("/manager/**").hasAnyRole("MANAGER","ADMIN")//role 여러개 담기 가능
+            .requestMatchers("/admin/**").hasAnyRole("ADMIN")
         )
         // .httpBasic(Customizer.withDefaults()) //http dafault인 로그인 창
-        .formLogin(login -> login.loginPage("/member/login").defaultSuccessUrl("/", true).permitAll())
+        .formLogin(login -> login.loginPage("/member/login").permitAll()
+        // .defaultSuccessUrl("/", true).permitAll())
+        .successHandler(loginSuccessHandler()))
+        .oauth2Login(login -> login.successHandler(loginSuccessHandler()))// 소셜 로그인 기능
         .logout(logout->logout.logoutUrl("/member/logout")// 로그아웃도 post 처리
         .logoutSuccessUrl("/")
         .invalidateHttpSession(true)
@@ -43,6 +49,13 @@ public class SecurityConfig{
         // .formLogin(Customizer.withDefaults()); 기본 창 뜨게함
         
         return http.build();
+    }
+
+
+    // 로그인이후
+    @Bean
+    LoginSuccessHandler loginSuccessHandler(){
+        return new LoginSuccessHandler();
     }
 
     @Bean

@@ -5,7 +5,7 @@
     <div>
       <div class="brand-logo d-flex align-items-center justify-content-between">
         <a href="./index.html" class="text-nowrap logo-img">
-          <img th:src="@{assets/images/logos/logo.svg}" alt="" />
+          <img th:src="@{/assets/images/logos/logo.svg}" alt="" />
         </a>
         <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
           <i class="ti ti-x fs-6"></i>
@@ -21,7 +21,7 @@
             ></iconify-icon>
             <span class="hide-menu">Home</span>
           </li>
-          <li class="sidebar-item">
+          <li class="sidebar-item" sec:authorize="!isAuthenticated()">
             <a class="sidebar-link" th:href="@{/member/login}" aria-expanded="false">
               <i class="ti ti-atom"></i>
               <span class="hide-menu">Login</span>
@@ -44,17 +44,35 @@
               </div>
             </a>
           </li>
-          <li class="sidebar-item">
-            <a class="sidebar-link justify-content-between" href="#" aria-expanded="false">
+          <li class="sidebar-item" sec:authorize="hasRole('ROLE_MANAGER')">
+            <a
+              class="sidebar-link justify-content-between"
+              th:href="@{/manager/info}"
+              aria-expanded="false"
+            >
               <div class="d-flex align-items-center gap-3">
                 <span class="d-flex">
                   <i class="ti ti-shopping-cart"></i>
                 </span>
-                <span class="hide-menu">eCommerce</span>
+                <span class="hide-menu">MANAGER</span>
               </div>
             </a>
           </li>
-          <li class="sidebar-item">
+          <li class="sidebar-item" sec:authorize="hasRole('ROLE_ADMIN')">
+            <a
+              class="sidebar-link justify-content-between"
+              th:href="@{/admin/manage}"
+              aria-expanded="false"
+            >
+              <div class="d-flex align-items-center gap-3">
+                <span class="d-flex">
+                  <i class="ti ti-shopping-cart"></i>
+                </span>
+                <span class="hide-menu">ADMIN</span>
+              </div>
+            </a>
+          </li>
+          <li class="sidebar-item" sec:authorize="isAuthenticated()">
             <a
               class="sidebar-link justify-content-between has-arrow"
               href="javascript:void(0)"
@@ -64,27 +82,27 @@
                 <span class="d-flex">
                   <i class="ti ti-layout-grid"></i>
                 </span>
-                <span class="hide-menu">Front Pages</span>
+                <span class="hide-menu" sec:authentication="principal.name"></span>
               </div>
             </a>
             <ul aria-expanded="false" class="collapse first-level">
               <li class="sidebar-item">
-                <a class="sidebar-link justify-content-between" href="#">
+                <a class="sidebar-link justify-content-between" th:href="@{/member/profile}">
                   <div class="d-flex align-items-center gap-3">
                     <div class="round-16 d-flex align-items-center justify-content-center">
                       <i class="ti ti-circle"></i>
                     </div>
-                    <span class="hide-menu">Homepage</span>
+                    <span class="hide-menu">PROFILE</span>
                   </div>
                 </a>
               </li>
               <li class="sidebar-item">
-                <a class="sidebar-link justify-content-between" href="#">
+                <a class="sidebar-link justify-content-between" href="#" id="logout">
                   <div class="d-flex align-items-center gap-3">
                     <div class="round-16 d-flex align-items-center justify-content-center">
                       <i class="ti ti-circle"></i>
                     </div>
-                    <span class="hide-menu">About Us</span>
+                    <span class="hide-menu">로그아웃</span>
                   </div>
                 </a>
               </li>
