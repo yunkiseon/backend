@@ -1,5 +1,6 @@
 package com.example.board.post.controller;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,11 +17,9 @@ import com.example.board.post.dto.PageRequestDTO;
 import com.example.board.post.dto.PageResultDTO;
 import com.example.board.post.service.BoardService;
 
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 
@@ -73,6 +72,7 @@ public class PostController {
         model.addAttribute("pageRequestDTO", pageRequestDTO);
     }
 
+    @PreAuthorize("authentication.name == #dto.writerEmail")
     @PostMapping("/modify")
     public String postupdate(BoardDTO dto ,PageRequestDTO pageRequestDTO, RedirectAttributes rttr) {
         log.info("수정 {} {}", dto, pageRequestDTO);
@@ -86,6 +86,7 @@ public class PostController {
         
         return "redirect:/board/read";
     }
+    @PreAuthorize("authentication.name == #dto.writerEmail")
     @PostMapping("/remove")
     public String postdelete(BoardDTO dto ,PageRequestDTO pageRequestDTO, RedirectAttributes rttr) {
         log.info("삭제 {} {}", dto, pageRequestDTO);

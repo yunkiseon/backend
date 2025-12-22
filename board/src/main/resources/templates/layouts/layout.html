@@ -49,6 +49,19 @@
         </div>
       </div>
     </div>
+    <form
+      sec:authorize="isAuthenticated()"
+      th:action="@{/member/logout}"
+      method="post"
+      id="logoutForm"
+    ></form>
+    <script>
+      // 로그아웃 클릭 시 logoutForm 전송
+      document.querySelector("#logout").addEventListener("click", (e) => {
+        e.preventDefault();
+        document.querySelector("#logoutForm").submit();
+      });
+    </script>
     <script th:src="@{/assets/libs/jquery/dist/jquery.min.js}"></script>
     <script th:src="@{/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js}"></script>
     <script th:src="@{/assets/js/sidebarmenu.js}"></script>

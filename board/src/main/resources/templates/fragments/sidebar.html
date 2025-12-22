@@ -4,7 +4,7 @@
     <!-- Sidebar scroll-->
     <div>
       <div class="brand-logo d-flex align-items-center justify-content-between">
-        <a href="./index.html" class="text-nowrap logo-img">
+        <a href="/board/list" class="text-nowrap logo-img">
           <img th:src="@{assets/images/logos/logo.svg}" alt="" />
         </a>
         <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
@@ -21,6 +21,12 @@
             ></iconify-icon>
             <span class="hide-menu">Home</span>
           </li>
+          <li class="sidebar-item" sec:authorize="!isAuthenticated()">
+            <a class="sidebar-link" th:href="@{/member/login}" aria-expanded="false">
+              <i class="ti ti-login"></i>
+              <span class="hide-menu">Login</span>
+            </a>
+          </li>
           <li class="sidebar-item">
             <a class="sidebar-link" th:href="@{/board/list}" aria-expanded="false">
               <i class="ti ti-atom"></i>
@@ -30,7 +36,7 @@
           <!-- ---------------------------------- -->
           <!-- Dashboard -->
           <!-- ---------------------------------- -->
-          <li class="sidebar-item">
+          <li class="sidebar-item" sec:authorize="isAuthenticated()">
             <a
               class="sidebar-link justify-content-between"
               th:href="@{/board/create}"

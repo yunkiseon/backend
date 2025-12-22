@@ -67,6 +67,7 @@ public class ReplyController {
 
         return rno;
     }
-    
+    // 데이터만 주고받는 rest형식으로 댓글을 만들었다. get 제외하고, csrf 필요하다.
+    // 
     
 }

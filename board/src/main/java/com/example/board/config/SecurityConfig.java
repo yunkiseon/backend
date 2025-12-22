@@ -1,29 +1,29 @@
-package com.example.club.config;
+package com.example.board.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
+
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
 import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices.RememberMeTokenAlgorithm;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import com.example.club.handler.LoginSuccessHandler;
+
+import com.example.board.member.handler.LoginSuccessHandler;
 
 import lombok.extern.log4j.Log4j2;
 
 // 시큐리티 설정 클래스
 
+@EnableMethodSecurity// preauthorize, postauthorize 등을 위해서 필요함
 @EnableWebSecurity// 모든 웹 요청에 대해서 Security Filter Chain 을 적용시킨다
 @Configuration// 스프링 설정 클래스
 @Log4j2
@@ -33,9 +33,16 @@ public class SecurityConfig{
     SecurityFilterChain securityFilterChain(HttpSecurity http, RememberMeServices rememberMeServices) throws Exception{
         // 모두 막힌 상황이라면 temple 도 제대로 로딩 되지 않는다. 그래서 이 부분은 풀어줄 필요가 있다.
         http.authorizeHttpRequests(authorize -> authorize
-            .requestMatchers("/","/assets/**", "/member/auth", "/img/**", "/templates/fragments").permitAll()
+            .requestMatchers("/","/assets/**","/js/**", "/member/auth", "/img/**", "/templates/fragments","/board/assets/images/**").permitAll()
             .requestMatchers("/member/register").permitAll()
-            .requestMatchers("/member/**").hasRole("USER")
+            .requestMatchers("/board/list", "/board/read", "/board/modify","/board/remove").permitAll()
+            .requestMatchers("/board/create").authenticated()
+            .requestMatchers("/replies/board/**").permitAll()
+            .requestMatchers("/replies/new").authenticated()
+            .requestMatchers("/replies/**").authenticated()
+            .requestMatchers("/board/modify/**").hasAnyRole("MANAGER","ADMIN", "USER")
+            .requestMatchers("/member/profile").hasRole("USER")
+            // .requestMatchers("/member/profile").authenticated() 위와 동일
             .requestMatchers("/manager/**").hasAnyRole("MANAGER","ADMIN")//role 여러개 담기 가능
             .requestMatchers("/admin/**").hasAnyRole("ADMIN")
         )

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  layout:decorate="~{layouts/layout}"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+  <div layout:fragment="content">
+    <h2>PROFILE</h2>
+    <!--sec: security의 약어-->
+    <h3>권한확인 : <span sec:authentication="principal.authorities"></span></h3>
+    <h3>username(ID) : <span sec:authentication="principal.username"></span></h3>
+    <div sec:authorize="isAuthenticated()">이 부분은 authentication 된 사용자가 보는 부분</div>
+    <div sec:authorize="hasRole('ROLE_ADMIN')">
+      이 부분은 authentication 된 사용자 중 ADMIN 권한을 가진 사용자가 보는 부분
+    </div>
+    <div sec:authorize="hasRole('ROLE_USER')">
+      이 부분은 authentication 된 사용자 중 USER 권한을 가진 사용자가 보는 부분
+    </div>
+    <div sec:authorize="hasAnyRole('ROLE_USER','ROLE_MANAGER')">
+      이 부분은 authentication 된 사용자 중 MANAGER 권한을 가진 사용자가 보는 부분
+    </div>
+    <div th:text="${#authentication.name}">
+      <!--이메일 나옴=name=id-->
+      The value of the "name" property of the authentication object should appear here.
+    </div>
+    <div th:text="${#authentication.principal.email}"></div>
+    <div th:text="${#authentication.principal.name}"></div>
+    <div th:text="${#authentication.principal.fromSocial}"></div>
+    <div th:text="${#authentication.principal.username}"></div>
+  </div>
+</html>

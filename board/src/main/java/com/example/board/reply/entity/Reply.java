@@ -1,5 +1,8 @@
 package com.example.board.reply.entity;
 
+
+
+import com.example.board.member.entity.Member;
 import com.example.board.post.entity.BaseEntity;
 import com.example.board.post.entity.Board;
 
@@ -34,7 +37,8 @@ public class Reply extends BaseEntity{
     @Column(nullable = false)
     private String text;
 
-    private String replyer;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    private Member replyer;
 
 
     //Board 1/ reply N

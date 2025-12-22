@@ -1,4 +1,4 @@
-package com.example.club.controller;
+package com.example.board.member.controller;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -6,21 +6,18 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
-import com.example.club.service.ClubService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.example.club.dto.MemberDTO;
-import com.example.club.dto.RegisterDTO;
+import com.example.board.member.dto.RegisterDTO;
+import com.example.board.member.service.MemberService;
 
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RequiredArgsConstructor
@@ -30,7 +27,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class MemberController {
 
     
-    private final ClubService clubService;
+    private final MemberService clubService;
 
     
     // http://localhost:8080 : 모두에게 개방

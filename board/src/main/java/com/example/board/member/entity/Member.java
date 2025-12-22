@@ -1,9 +1,15 @@
 package com.example.board.member.entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import com.example.board.member.entity.entity.MemberRole;
 import com.example.board.post.entity.BaseEntity;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -30,4 +36,14 @@ public class Member extends BaseEntity{
 
     @Column(nullable = false)
     private String name;
+
+    private boolean fromSocial;
+
+    @ElementCollection(fetch = FetchType.LAZY)
+    @Builder.Default
+    private Set<MemberRole> roles = new HashSet<>();
+
+    public void addMemberRole(MemberRole role){
+        roles.add(role);
+    }
 }

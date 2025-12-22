@@ -6,7 +6,7 @@
         <h5 class="card-title fw-semibold mb-4">게시글 등록</h5>
         <div class="card">
           <div class="card-body">
-            <form action="" method="post" th:object="${boardDTO}">
+            <form action="" method="post" th:object="${boardDTO}" th:action="@{/board/create}">
               <div class="mb-3">
                 <label for="title" class="form-label">제목</label>
                 <input
@@ -49,7 +49,8 @@
                   id="writerName"
                   aria-describedby="writerName"
                   name="writerName"
-                  th:value="${boardDTO.writerName}"
+                  th:value="${#authentication.principal.name}"
+                  readonly
                 />
               </div>
               <div class="mb-3">
@@ -59,7 +60,7 @@
                   id="writerEmail"
                   aria-describedby="writerEmail"
                   name="writerEmail"
-                  value="user1@gmail.com"
+                  th:value="${#authentication.name}"
                 />
               </div>
               <button type="submit" class="btn btn-primary">등록</button>

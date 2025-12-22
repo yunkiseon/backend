@@ -1,4 +1,5 @@
 const url = `http://localhost:8080/replies`;
+const csrfVal = document.querySelector("#replyForm").querySelector("[name='_csrf']").value;
 
 const replyList = document.querySelector(".replyList");
 
@@ -18,7 +19,7 @@ document.querySelector("#replyForm").addEventListener("submit", (e) => {
   const reply = {
     rno: rno,
     text: form.text.value,
-    replyer: form.replyer.value,
+    replyerEmail: form.replyerEmail.value,
     bno: bno,
   };
 
@@ -27,6 +28,7 @@ document.querySelector("#replyForm").addEventListener("submit", (e) => {
     fetch(`${url}/new`, {
       method: "POST",
       headers: {
+        "X-CSRF-TOKEN": csrfVal,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(reply),
@@ -47,7 +49,7 @@ document.querySelector("#replyForm").addEventListener("submit", (e) => {
           });
         }
         // form.reset 도 가능하지만 rno 값을 남겨야하기 때문에.
-        form.replyer.value = "";
+        // form.replyer.value = "";
         form.text.value = "";
         loadReply();
       })
@@ -58,6 +60,7 @@ document.querySelector("#replyForm").addEventListener("submit", (e) => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        "X-CSRF-TOKEN": csrfVal,
       },
       body: JSON.stringify(reply),
     })
@@ -77,7 +80,7 @@ document.querySelector("#replyForm").addEventListener("submit", (e) => {
           });
         }
         // form.reset 도 가능하지만 rno 값을 남겨야하기 때문에.
-        form.replyer.value = "";
+        // form.replyer.value = "";
         form.text.value = "";
         form.rno.value = "";
         form.rbtn.innerHTML = "댓글 작성";
@@ -129,12 +132,12 @@ const loadReply = () => {
 
         result += `<div class="d-flex justify-content-between my-2 border-bottom reply-row" data-rno="${
           reply.rno
-        }">
+        }" data-email="${reply.replyerEmail}">
           <div class="p-3">
             <img src="/img/user.png" alt="" class="rounded-circle mx-auto d-block" style="width: 60px; height: 60px" />
           </div>
           <div class="flex-grow-1 align-self-center">
-            <div>${reply.replyer}</div>
+            <div>${reply.replyerName}</div>
             <div>
               <span class="fs-5">${reply.text}</span>
             </div>
@@ -184,6 +187,9 @@ replyList.addEventListener("click", (e) => {
     // true 인 겨우 삭제요청(fetch)
     fetch(`${url}/${rno}`, {
       method: "DELETE",
+      headers: {
+        "X-CSRF-TOKEN": csrfVal,
+      },
     })
       .then((res) => {
         if (!res.ok) {
@@ -220,7 +226,7 @@ replyList.addEventListener("click", (e) => {
         console.log(data);
         form.rno.value = data.rno;
         form.text.value = data.text;
-        form.replyer.value = data.replyer;
+        // form.replyer.value = data.replyer;
         // 댓글 작성 버튼 -> 댓글 수정 버튼
         form.rbtn.innerHTML = "댓글수정";
       })

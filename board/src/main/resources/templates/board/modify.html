@@ -6,7 +6,7 @@
         <h5 class="card-title fw-semibold mb-4">도서 수정</h5>
         <div class="card">
           <div class="card-body">
-            <form action="" method="post">
+            <form action="" method="post" th:action="@{/board/modify}">
               <div class="mb-3">
                 <label for="bno" class="form-label">BNO</label>
                 <input
@@ -52,11 +52,24 @@
                 th:href="@{/board/list(page=${pageRequestDTO.page}, size=${pageRequestDTO.size})}"
                 >목록</a
               >
-              <!--modify 에서는 포함하지 않아도 되나, remove에서는 필요로 함-->
+              <input type="hidden" name="writerEmail" th:value="${dto.writerEmail}" />
+              <!--modify 에서는 포함하지 않아도 되나, remove에서는 필요로 함, 위의 email값도 콘트롤러에서 받아주기 위해 필요함-->
               <input type="hidden" name="size" th:value="${pageRequestDTO.size}" />
               <input type="hidden" name="page" th:value="${pageRequestDTO.page}" />
-              <button type="submit" class="btn btn-success">수정</button>
-              <button type="button" class="btn btn-danger">삭제</button>
+              <button
+                type="submit"
+                class="btn btn-success"
+                th:if="${dto.writerEmail} == ${#authentication.name}"
+              >
+                수정
+              </button>
+              <button
+                type="button"
+                class="btn btn-danger"
+                th:if="${dto.writerEmail} == ${#authentication.name}"
+              >
+                삭제
+              </button>
               <!-- <input type="hidden" name="page" th:value="${pageRequestDTO.page}" /> -->
             </form>
           </div>
