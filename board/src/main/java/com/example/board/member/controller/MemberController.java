@@ -1,5 +1,6 @@
 package com.example.board.member.controller;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,7 +35,7 @@ public class MemberController {
     // http://localhost:8080/guest : 모두에게 개방
     // http://localhost:8080/member : 멤버에게만 개방
     // http://localhost:8080/admin : admin만 개방
-
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/profile")
     public void getProfile() {
         log.info("profile 요청");

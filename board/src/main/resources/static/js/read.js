@@ -1,5 +1,10 @@
 const url = `http://localhost:8080/replies`;
-const csrfVal = document.querySelector("#replyForm").querySelector("[name='_csrf']").value;
+// replyForm 에서 csrf 값 가져오기
+const replyForm = document.querySelector("#replyForm");
+let csrfVal = undefined;
+if (replyForm) {
+  csrfVal = document.querySelector("#replyForm").querySelector("[name='_csrf']").value;
+}
 
 const replyList = document.querySelector(".replyList");
 
@@ -12,83 +17,88 @@ const replyList = document.querySelector(".replyList");
 // }
 // 댓글 작성인가 수정인가를 구별하려면 rno value 값의 존재여부로 확인하면 된다.
 
-document.querySelector("#replyForm").addEventListener("submit", (e) => {
-  e.preventDefault();
-  const form = e.target;
-  const rno = form.rno.value;
-  const reply = {
-    rno: rno,
-    text: form.text.value,
-    replyerEmail: form.replyerEmail.value,
-    bno: bno,
-  };
+if (replyForm) {
+  // 댓글 작성시
+  document.querySelector("#replyForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const rno = form.rno.value;
+    const reply = {
+      rno: rno,
+      text: form.text.value,
+      replyerEmail: form.replyerEmail.value,
+      bno: bno,
+    };
 
-  if (!rno) {
-    //new
-    fetch(`${url}/new`, {
-      method: "POST",
-      headers: {
-        "X-CSRF-TOKEN": csrfVal,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(reply),
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`error! ${res.status}`);
-        }
-        return res.json();
+    if (!rno) {
+      //new
+      fetch(`${url}/new`, {
+        method: "POST",
+        headers: {
+          "X-CSRF-TOKEN": csrfVal,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(reply),
       })
-      .then((data) => {
-        console.log(data);
-        if (data) {
-          Swal.fire({
-            title: "댓글 작성 완료",
-            icon: "success",
-            draggable: true,
-          });
-        }
-        // form.reset 도 가능하지만 rno 값을 남겨야하기 때문에.
-        // form.replyer.value = "";
-        form.text.value = "";
-        loadReply();
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error(`error! ${res.status}`);
+          }
+          return res.json();
+        })
+        .then((data) => {
+          console.log(data);
+          if (data) {
+            Swal.fire({
+              title: "댓글 작성 완료",
+              icon: "success",
+              draggable: true,
+            });
+          }
+          // form.reset 도 가능하지만 rno 값을 남겨야하기 때문에.
+          // form.replyer.value = "";
+          form.text.value = "";
+          loadReply();
+        })
+        .catch((err) => console.log(err));
+    } else {
+      //modify
+      fetch(`${url}/${rno}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-TOKEN": csrfVal,
+        },
+        body: JSON.stringify(reply),
       })
-      .catch((err) => console.log(err));
-  } else {
-    //modify
-    fetch(`${url}/${rno}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRF-TOKEN": csrfVal,
-      },
-      body: JSON.stringify(reply),
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`error! ${res.status}`);
-        }
-        return res.json();
-      })
-      .then((data) => {
-        console.log(data);
-        if (data) {
-          Swal.fire({
-            title: "댓글 수정 완료",
-            icon: "success",
-            draggable: true,
-          });
-        }
-        // form.reset 도 가능하지만 rno 값을 남겨야하기 때문에.
-        // form.replyer.value = "";
-        form.text.value = "";
-        form.rno.value = "";
-        form.rbtn.innerHTML = "댓글 작성";
-        loadReply();
-      })
-      .catch((err) => console.log(err));
-  }
-});
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error(`error! ${res.status}`);
+          }
+          return res.json();
+        })
+        .then((data) => {
+          console.log(data);
+          if (data) {
+            Swal.fire({
+              title: "댓글 수정 완료",
+              icon: "success",
+              draggable: true,
+            });
+          }
+          // form.reset 도 가능하지만 rno 값을 남겨야하기 때문에.
+          // form.replyer.value = "";
+          form.replyerEmail.value = data.replyerEmail;
+          form.replyerName.value = data.replyerName;
+          form.text.value = "";
+          form.rno.value = "";
+          form.rbtn.innerHTML = "댓글 작성";
+          loadReply();
+        })
+        .catch((err) => console.log(err));
+    }
+  });
+}
 
 // 날짜 시간
 const formatDate = (data) => {
@@ -144,16 +154,20 @@ const loadReply = () => {
             <div class="text-muted">
               <span class="small">${formatDate(reply.createDateTime2)}</span>
             </div>
-          </div>
-          <div class="flex-grow-1 align-self-center">
-            <div class="mb-2">
-              <button class="btn btn-outline-danger btn-sm">삭제</button>
+          </div>`;
+        if (`${loginUser}` === `${reply.replyerEmail}`) {
+          result += `
+            <div class="flex-grow-1 align-self-center">
+              <div class="mb-2">
+                <button class="btn btn-outline-danger btn-sm">삭제</button>
+              </div>
+              <div class="mb-2">
+                <button class="btn btn-outline-success btn-sm"">수정</button>
+              </div>
             </div>
-            <div class="mb-2">
-              <button class="btn btn-outline-success btn-sm"">수정</button>
-            </div>
-          </div>
-        </div>`;
+          </div>`;
+        }
+        result += `</div>`;
       });
 
       replyList.innerHTML = result;
@@ -226,6 +240,8 @@ replyList.addEventListener("click", (e) => {
         console.log(data);
         form.rno.value = data.rno;
         form.text.value = data.text;
+        form.replyerEmail.value = data.replyerEmail;
+        form.replyerName.value = data.replyerName;
         // form.replyer.value = data.replyer;
         // 댓글 작성 버튼 -> 댓글 수정 버튼
         form.rbtn.innerHTML = "댓글수정";

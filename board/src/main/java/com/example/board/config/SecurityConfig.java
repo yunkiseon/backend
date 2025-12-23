@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -32,30 +32,43 @@ public class SecurityConfig{
     @Bean 
     SecurityFilterChain securityFilterChain(HttpSecurity http, RememberMeServices rememberMeServices) throws Exception{
         // 모두 막힌 상황이라면 temple 도 제대로 로딩 되지 않는다. 그래서 이 부분은 풀어줄 필요가 있다.
+        // http.authorizeHttpRequests(authorize -> authorize
+        //     .requestMatchers("/","/assets/**","/js/**", "/member/auth", "/img/**", "/templates/fragments","/board/assets/images/**").permitAll()
+        //     .requestMatchers("/member/register").permitAll()
+        //     .requestMatchers("/board/list", "/board/read", "/board/modify","/board/remove").permitAll()
+        //     .requestMatchers("/board/create").authenticated()
+        //     .requestMatchers("/replies/board/**").permitAll()
+        //     .requestMatchers("/replies/**").authenticated()
+        //     .requestMatchers("/board/modify/**").hasAnyRole("MANAGER","ADMIN", "USER")
+        //     .requestMatchers("/member/profile").hasRole("USER")
+        //     // .requestMatchers("/member/profile").authenticated() 위와 동일
+        //     .requestMatchers("/manager/**").hasAnyRole("MANAGER","ADMIN")//role 여러개 담기 가능
+        //     .requestMatchers("/admin/**").hasAnyRole("ADMIN")
+        // )
+        // // .httpBasic(Customizer.withDefaults()) //http dafault인 로그인 창
+        // .formLogin(login -> login.loginPage("/member/login").permitAll()
+        // // .defaultSuccessUrl("/", true).permitAll())
+        // .successHandler(loginSuccessHandler()))
+        // .oauth2Login(login -> login.successHandler(loginSuccessHandler()))// 소셜 로그인 기능
+        // .logout(logout->logout.logoutUrl("/member/logout")// 로그아웃도 post 처리
+        //     .logoutSuccessUrl("/")
+        //     .invalidateHttpSession(true)
+        //     .deleteCookies("JSESSIONID")
+        // ).rememberMe(remember -> remember.rememberMeServices(rememberMeServices));
+
+        // 위와 동일
         http.authorizeHttpRequests(authorize -> authorize
-            .requestMatchers("/","/assets/**","/js/**", "/member/auth", "/img/**", "/templates/fragments","/board/assets/images/**").permitAll()
-            .requestMatchers("/member/register").permitAll()
-            .requestMatchers("/board/list", "/board/read", "/board/modify","/board/remove").permitAll()
-            .requestMatchers("/board/create").authenticated()
-            .requestMatchers("/replies/board/**").permitAll()
-            .requestMatchers("/replies/new").authenticated()
-            .requestMatchers("/replies/**").authenticated()
-            .requestMatchers("/board/modify/**").hasAnyRole("MANAGER","ADMIN", "USER")
-            .requestMatchers("/member/profile").hasRole("USER")
-            // .requestMatchers("/member/profile").authenticated() 위와 동일
-            .requestMatchers("/manager/**").hasAnyRole("MANAGER","ADMIN")//role 여러개 담기 가능
-            .requestMatchers("/admin/**").hasAnyRole("ADMIN")
-        )
-        // .httpBasic(Customizer.withDefaults()) //http dafault인 로그인 창
-        .formLogin(login -> login.loginPage("/member/login").permitAll()
-        // .defaultSuccessUrl("/", true).permitAll())
-        .successHandler(loginSuccessHandler()))
-        .oauth2Login(login -> login.successHandler(loginSuccessHandler()))// 소셜 로그인 기능
-        .logout(logout->logout.logoutUrl("/member/logout")// 로그아웃도 post 처리
-            .logoutSuccessUrl("/")
-            .invalidateHttpSession(true)
-            .deleteCookies("JSESSIONID")
-        ).rememberMe(remember -> remember.rememberMeServices(rememberMeServices));
+            .requestMatchers("/","/assets/**","/js/**", "/img/**").permitAll()
+            .anyRequest().permitAll());                                                                                               
+        http.formLogin(login -> login
+            .loginPage("/member/login").successHandler(loginSuccessHandler()).permitAll());
+        http.oauth2Login(login -> login.successHandler(loginSuccessHandler()));
+        http.logout(logout -> logout.logoutUrl("/member/logout").logoutSuccessUrl("/"));
+        http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS));
+        http.rememberMe(remember -> remember.rememberMeServices(rememberMeServices));
+        
+            // 다열었으니 닫는거만 Controller에서 해주면 됨
+        
         
         // .formLogin(Customizer.withDefaults()); 기본 창 뜨게함
         

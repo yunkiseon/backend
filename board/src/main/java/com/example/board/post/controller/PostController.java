@@ -38,6 +38,7 @@ public class PostController {
         log.info("작성 폼 요청");
     }
     
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/create")
     public String postCreate(@Valid BoardDTO dto, BindingResult result, PageRequestDTO pageRequestDTO, RedirectAttributes rttr) {
        log.info("작성 {}", dto);
