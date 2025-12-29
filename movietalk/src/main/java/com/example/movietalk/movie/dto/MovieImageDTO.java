@@ -31,7 +31,7 @@ public class MovieImageDTO {
     // static 폴더 안에 있으면 html에서 src를 통해서 접근할 수 있지만, 다른 컴퓨터에서 호완이 안된다.
     
 
-    public String getThumnailURL(){
+    public String getThumbnailURL(){
         String thumbFullPath = "";
 
         // java.ner.URL~

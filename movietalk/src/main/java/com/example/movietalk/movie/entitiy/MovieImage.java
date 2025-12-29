@@ -36,4 +36,9 @@ public class MovieImage {
     @JoinColumn(name = "mno")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Movie movie;
+
+
+    public void setOrd(int ord){
+        this.ord = ord;
+    }
 }

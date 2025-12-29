@@ -18,6 +18,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 
 import lombok.extern.log4j.Log4j2;
+import net.coobird.thumbnailator.Thumbnailator;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -74,7 +76,12 @@ public class UploadController {
             
             try {
                 // 파일 저장
-                file.transferTo(new File(saveName));
+                File saveFile = new File(saveName);
+                file.transferTo(saveFile);
+                // 썸네일 저장
+                String thumbSaveName= uploadPath + File.separator + saveDirPath + File.separator + "s_" + uuid +"_" +oriName;
+                File thumbFile = new File(thumbSaveName);
+                Thumbnailator.createThumbnail(saveFile,thumbFile, 100, 100);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -91,7 +98,9 @@ public class UploadController {
 
         try {
             String srcFileName = URLDecoder.decode(fileName, "utf-8");
+            // c:/upload/2025~~
             File file = new File(uploadPath + File.separator + srcFileName);
+            // image/png
             HttpHeaders headers = new HttpHeaders();
             headers.add("Content-Type", Files.probeContentType(file.toPath()));
             result = new ResponseEntity<>(FileCopyUtils.copyToByteArray(file), headers, HttpStatus.OK);
@@ -103,8 +112,29 @@ public class UploadController {
     }
     
 
-    
+    // 파일 삭제
+@PostMapping("/remove")
+    public ResponseEntity<String> removeFile(String fileName){
+        log.info("삭제할 파일 {} ", fileName);
+        ResponseEntity<String> result = null;
 
+        try {
+            // decode 하는 이유 %2F라고 html에 적히는 걸 /로 치환
+            String srcFileName = URLDecoder.decode(fileName, "utf-8");
+            // c:/upload/2025~~
+            File file = new File(uploadPath + File.separator + srcFileName);
+            // 원본파일삭제            
+            // 썸네일 삭제
+            File thumbFile = new File(file.getParent(),"s_"+file.getName());
+            thumbFile.delete();
+            file.delete();
+            result = new ResponseEntity<>("success", HttpStatus.OK);
+        } catch (Exception e) {
+           e.printStackTrace();
+           result = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return result;
+    }
 
 
 

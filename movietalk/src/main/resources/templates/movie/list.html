@@ -28,10 +28,16 @@
                    movieImageDTO의 메소드 활용
                    upload->display에 들어가서 파일의 이름이 ${} 인 것을 가져와라
                    th:if="${movie.movieImages.size() > 0 && movieImages[0].path != null}"
-                      th:src="|/upload/display?fileName=${movie.movieImages[0].getThumnailURL()}|"
+                   th:src="|/upload/display?fileName=${movie.movieImages[0].getThumnailURL()}|"
                    -->
                   <div class="relative hidden w-8 h-8 mr-3 rounded-full md:block">
-                    <img class="object-cover w-full h-full rounded-full" alt="" loading="lazy" />
+                    <img
+                      class="object-cover w-full h-full rounded-full"
+                      alt=""
+                      loading="lazy"
+                      th:if="${movie.movieImages.size() > 0 && movie.movieImages[0].path != null}"
+                      th:src="|/upload/display?fileName=${movie.movieImages[0].getThumbnailURL()}|"
+                    />
                     <div
                       class="absolute inset-0 rounded-full shadow-inner"
                       aria-hidden="true"
@@ -40,7 +46,7 @@
                   <div>
                     <p class="font-semibold">
                       <!--영화제목-->
-                      <a href="" th:text="${movie.title}"></a>
+                      <a th:href="@{read(mno=${movie.mno})}" th:text="${movie.title}"></a>
                     </p>
                   </div>
                 </div>

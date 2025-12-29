@@ -4,6 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
   </head>
   <body>
     <h3>업로드 테스트</h3>
@@ -16,15 +23,49 @@
     <div id="output"></div>
   </body>
   <script>
+    // x 를 클릭 시 파일 삭제
+    document.querySelector("#output").addEventListener("click", (e) => {
+      // 이벤트 버블링 -> 대상은 누구인가?
+      // target으로 <i> 가 찍힌다. 허나 필요한 것은 i를 감싼 a태그
+      console.log("이벤트 대상 ", e.target);
+      // closese() : 가장가까운 부모 요소 찾기
+      e.preventDefault();
+
+      const aTag = e.target.closest("a");
+      const div = e.target.closest("div");
+      // href 값 가져오기
+      // console.log("속성 값 ", aTag.href);
+      // console.log("속성 값 ", aTag.href);
+      console.log("속성 값 ", aTag.getAttribute("href"));
+      const href = aTag.getAttribute("href");
+      // 컨트롤러로 요청 보내기
+
+      const formData = new FormData();
+      formData.append("fileName", href);
+      fetch("/upload/remove", {
+        method: "post",
+        body: formData,
+      })
+        .then((res) => res.text())
+        .then((data) => {
+          console.log(data);
+          // 화면에서 이미지 제거
+          div.remove();
+        });
+    });
+
     const showUploadImages = (files) => {
       const output = document.querySelector("#output");
 
+      let tags = "";
+
       files.forEach((file) => {
-        output.insertAdjacentHTML(
-          "beforeend",
-          `<img src="/upload/display?fileName=${file.imageURL}">`
-        );
+        tags += "<div>";
+        tags += `<img src="/upload/display?fileName=${file.thumbnailURL}">`;
+        tags += `<a href="${file.imageURL}"><i class="fa-solid fa-xmark"></i></a>`;
+        tags += "</div>";
       });
+      output.insertAdjacentHTML("beforeend", tags);
     };
 
     document.querySelector("button").addEventListener("click", () => {
