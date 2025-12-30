@@ -46,7 +46,7 @@
                   <div>
                     <p class="font-semibold">
                       <!--영화제목-->
-                      <a th:href="@{read(mno=${movie.mno})}" th:text="${movie.title}"></a>
+                      <a th:href="@{read(mno=${movie.mno},page=${pageRequestDTO.page},size=${pageRequestDTO.size})}" th:text="${movie.title}"></a>
                     </p>
                   </div>
                 </div>
@@ -79,8 +79,9 @@
         <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
           <nav aria-label="Table navigation">
             <ul class="inline-flex items-center">
-              <li>
+              <li th:if="${result.prev}">
                 <a
+                  th:href="@{list(page=${result.prevPage}, size=${result.pageRequestDTO.size})}"
                   class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple"
                   aria-label="Previous"
                 >
@@ -93,18 +94,19 @@
                   </svg>
                 </a>
               </li>
-              <li>
+              <li th:each="page : ${result.pageNumList}">
                 <a
-                  class="'px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple text-white transition-colors duration-150 bg-purple-600 border border-r-0 border-purple-600"
-                  href=""
-                >
+                  class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
+                  th:classappend="${result.current == page} ? 'text-white transition-colors duration-150 bg-purple-600 border border-r-0 border-purple-600'"
+                  th:href="@{list(page=${page}, size=${result.pageRequestDTO.size})}"
+                  >[[${page}]]
                 </a>
               </li>
-              <li>
+              <li th:if="${result.next}">
                 <a
+                  th:href="@{list(page=${result.nextPage}, size=${result.pageRequestDTO.size})}"
                   class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple"
                   aria-label="Next"
-                  href=""
                 >
                   <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
                     <path

@@ -18,11 +18,13 @@ import com.example.movietalk.movie.dto.MovieDTO;
 import com.example.movietalk.movie.dto.MovieImageDTO;
 import com.example.movietalk.movie.dto.PageRequestDTO;
 import com.example.movietalk.movie.dto.PageResultDTO;
+import com.example.movietalk.movie.dto.ReviewDTO;
 import com.example.movietalk.movie.entitiy.Movie;
 import com.example.movietalk.movie.entitiy.MovieImage;
+import com.example.movietalk.movie.entitiy.Review;
 import com.example.movietalk.movie.repository.MovieImageRepository;
 import com.example.movietalk.movie.repository.MovieRepository;
-
+import com.example.movietalk.movie.repository.ReviewRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -34,6 +36,35 @@ import lombok.extern.log4j.Log4j2;
 public class MovieServiece {
     private final MovieRepository movieRepository;
     private final MovieImageRepository movieImageRepository;
+    private final ReviewRepository reviewRepository;
+
+   
+    // 영화 삭제
+    public void deleteRow(Long mno){
+        // 리뷰 삭제
+        Movie movie = movieRepository.findById(mno).get();
+        reviewRepository.deleteByMovie(movie);
+        // 영화이미지 제거
+        movieImageRepository.deleteByMovie(movie);
+        // 영화삭제
+        movieRepository.delete(movie);
+    }
+
+    // 영화수정
+    public Long updateRow(MovieDTO dto){
+        
+        // 영화 제목 변경
+        Movie movie = movieRepository.findById(dto.getMno()).get();
+        movie.changeTitle(dto.getTitle());
+        // 더티체킹으로 세이브안해도 적용됨
+        //영화이미지 제거
+        movieImageRepository.deleteByMovie(movie);
+        //이미지추가
+        
+        movie = dtoToEntity(dto);
+        movie.getMovieImages().forEach(img -> movieImageRepository.save(img));
+        return movie.getMno();
+    }
 
     @Transactional(readOnly = true)
     public MovieDTO getRow(Long mno){

@@ -46,6 +46,17 @@ public class MovieRepositoryTest {
     private PasswordEncoder passwordEncoder;
 
 
+    @Commit
+    @Transactional
+    @Test
+    public void deleteByMovieTest(){
+        Movie movie = movieRepository.findById(103L).get();
+        // 영화이미지 삭제
+        movieImageRepository.deleteByMovie(movie);
+        // 영화삭제
+        movieRepository.delete(movie);
+    }
+
 
 
     @Test

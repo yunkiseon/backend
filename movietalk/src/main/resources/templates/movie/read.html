@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" layout:decorate="~{layouts/layout}">
-  <th:block layout:fragment="css"> </th:block>
+  <th:block layout:fragment="css">
+  <link rel="stylesheet" th:href="@{/css/upload.css}">    
+</th:block>
   <div class="container px-6 mx-auto grid" layout:fragment="content">
     <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">Movie Read</h2>
     <!-- New Table -->
@@ -46,23 +48,33 @@
           </div>
           <div class="mt-4">
             <a
-              href=""
+              th:href="@{modify(mno=${dto.mno},page=${pageRequestDTO.page},size=${pageRequestDTO.size})}"
               class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
               >수정</a
             >
             <a
-              href=""
+            
+              th:href="@{list(page=${pageRequestDTO.page},size=${pageRequestDTO.size})}"
               class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue"
               >목록</a
             >
           </div>
         </form>
       </div>
-      <!-- 포스터 보여주기 -->
+      <!-- 포스터 보여주기 attr:attribute -->
       <div class="uploadResult mb-4">
         <ul>
-          <li>
-            <img class="block" data-bs-toggle="modal" data-bs-target="#imgModal" />
+          <li
+            th:each="movieImage : ${dto.movieImages}"
+            data-bs-toggle="modal"
+            data-bs-target="#imgModal"
+            th:attr="data-file=${movieImage.getImageURL()}"
+          >
+            <img
+              class="block"
+              th:if="${movieImage.path != null}"
+              th:src="|/upload/display?fileName=${movieImage.getThumbnailURL()}|"
+            />
           </li>
         </ul>
       </div>
@@ -149,7 +161,10 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
+    <script>
+      const title = `[[${dto.title}]]`
+    </script>
     <script th:src="@{/assets/js/starrr.js}"></script>
-    <script></script>
+    <script th:src="@{/js/read.js}"></script>
   </th:block>
 </html>

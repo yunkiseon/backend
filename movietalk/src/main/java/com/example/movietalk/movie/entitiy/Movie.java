@@ -42,5 +42,8 @@ public class Movie extends BaseEntity{
         movieImages.add(movieImage);
 
     }
+    public void changeTitle(String title) {
+        this.title = title;
+    }
 
 }
