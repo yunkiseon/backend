@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" layout:decorate="~{layouts/layout}">
   <th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/assets/css/starrr.css}">
   <link rel="stylesheet" th:href="@{/css/upload.css}">    
 </th:block>
   <div class="container px-6 mx-auto grid" layout:fragment="content">
@@ -161,10 +162,20 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
-    <script>
-      const title = `[[${dto.title}]]`
-    </script>
     <script th:src="@{/assets/js/starrr.js}"></script>
+    <script>
+      const title = `[[${dto.title}]]`;
+      const mno = `[[${dto.mno}]]`;
+
+      let grade = 0;
+      $('.starrr').starrr({
+        rating:grade,
+      change: function(e, value){
+      console.log("별정" +value);
+      grade = value;
+  }
+})
+    </script>
     <script th:src="@{/js/read.js}"></script>
   </th:block>
 </html>

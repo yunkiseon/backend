@@ -1,14 +1,30 @@
 <!DOCTYPE html>
 <html lang="en" layout:decorate="~{layouts/layout}">
-  <div class="container px-6 mx-auto mt-8 flex flex-col overflow-y-auto md:flex-row" layout:fragment="content">
+  <div
+    class="container px-6 mx-auto mt-8 flex flex-col overflow-y-auto md:flex-row"
+    layout:fragment="content"
+  >
     <div class="h-32 md:h-auto md:w-1/2">
-      <img aria-hidden="true" class="object-cover w-full h-full dark:hidden" src="../assets/img/login-office.jpeg" alt="Office" />
-      <img aria-hidden="true" class="hidden object-cover w-full h-full dark:block" src="../assets/img/login-office-dark.jpeg" alt="Office" />
+      <img
+        aria-hidden="true"
+        class="object-cover w-full h-full dark:hidden"
+        src="../assets/img/login-office.jpeg"
+        alt="Office"
+      />
+      <img
+        aria-hidden="true"
+        class="hidden object-cover w-full h-full dark:block"
+        src="../assets/img/login-office-dark.jpeg"
+        alt="Office"
+      />
     </div>
     <div class="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
       <div class="w-full">
         <h1 class="mb-4 text-xl font-semibold text-gray-700 dark:text-gray-200">Login</h1>
-        <form action="" method="post">
+        <!--thymleaf action 사용하면 csrf 자동삽입
+        login post를 따로 작성하지 않지만 userdetailsservice를 구현해야함
+        -->
+        <form th:action="@{/member/login}" method="post">
           <label class="block text-sm">
             <span class="text-gray-700 dark:text-gray-400">Email</span>
             <input
@@ -38,12 +54,20 @@
         <hr class="my-8" />
 
         <p class="mt-4">
-          <a class="text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline" href="./forgot-password.html">
+          <a
+            class="text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline"
+            href="./forgot-password.html"
+          >
             Forgot your password?
           </a>
         </p>
         <p class="mt-1">
-          <a class="text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline" href=""> Create account </a>
+          <a
+            class="text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline"
+            href=""
+          >
+            Create account
+          </a>
         </p>
       </div>
     </div>
