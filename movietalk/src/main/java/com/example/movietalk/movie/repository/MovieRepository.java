@@ -5,13 +5,18 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.example.movietalk.member.entitiy.Member;
 import com.example.movietalk.movie.entitiy.Movie;
 
 public interface MovieRepository extends JpaRepository<Movie, Long>{
     
+    
+
+
     //sql과 달리 열린 쪽의 컬럼과 열결된 쪽의 테이블명
     // distinct -> 중복제거, coalesce-> null = 0
     @Query(value = "select m, mi, count(distinct r), avg(coalesce(r.grade,0)) " 

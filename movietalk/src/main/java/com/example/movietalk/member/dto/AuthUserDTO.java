@@ -30,6 +30,7 @@ public class AuthUserDTO extends User{
 
     public AuthUserDTO(CustomUserDTO customUserDTO){
         super(customUserDTO.getEmail(),customUserDTO.getPassword(), List.of(new SimpleGrantedAuthority("ROLE_"+customUserDTO.getRole())));
+        this.customUserDTO = customUserDTO;
     }
     
 }

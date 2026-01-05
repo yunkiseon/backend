@@ -7,7 +7,7 @@
 
     <div class="w-full overflow-x-auto">
       <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
-        <form action="" method="post" id="createForm">
+        <form th:action="@{/movie/modify}" method="post" id="createForm">
           <input type="hidden" name="mno" th:value="${dto.mno}">
           <input type="hidden" name="page" th:value="${pageRequestDTO.page}">
        <input type="hidden" name="size" th:value="${pageRequestDTO.size}">

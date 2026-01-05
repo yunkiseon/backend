@@ -88,16 +88,18 @@
       </div>
 
       <!-- 리뷰작성 -->
-      <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
+      <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800" sec:authorize="hasAnyRole('MEMBER','ADMIN')">
         <form action="" method="post" id="reviewForm">
           <input type="hidden" name="rno" />
-          <input type="hidden" name="mid" />
+          <input type="hidden" name="mid" th:value="${#authentication.principal.customUserDTO.mid}" />
+          <input type="hidden" name="email"/>
           <input type="hidden" name="mno" />
           <input type="hidden" name="grade" />
           <div class="mt-4">
             <label class="block text-sm">
               <span class="text-gray-700 dark:text-gray-400">작성자</span>
               <input
+              th:value="${#authentication.principal.customUserDTO.nickname}"
                 readonly
                 name="nickname"
                 class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
@@ -166,12 +168,14 @@
     <script>
       const title = `[[${dto.title}]]`;
       const mno = `[[${dto.mno}]]`;
+      const csrfVal = '[[${_csrf.token}]]';
+      const loginUser = '[[${#authentication.name}]]';
 
       let grade = 0;
       $('.starrr').starrr({
         rating:grade,
       change: function(e, value){
-      console.log("별정" +value);
+      console.log("별점" +value);
       grade = value;
   }
 })

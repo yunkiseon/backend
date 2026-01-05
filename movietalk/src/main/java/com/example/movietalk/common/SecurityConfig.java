@@ -35,7 +35,8 @@ public class SecurityConfig{
         http.formLogin(login -> login.loginPage("/member/login"));
             // .successHandler(loginSuccessHandler()).permitAll());
         // http.oauth2Login(login -> login.successHandler(loginSuccessHandler()));
-        // http.logout(logout -> logout.logoutUrl("/member/logout").logoutSuccessUrl("/"));
+        http.logout(logout -> logout.logoutUrl("/member/logout")
+        .logoutSuccessUrl("/"));
 
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS));
 
@@ -43,6 +44,7 @@ public class SecurityConfig{
         
         // csrf 기능 중지-> 개발 중에만
         // http.csrf(csrf -> csrf.disable());
+        http.csrf(csrf -> csrf.ignoringRequestMatchers("/upload/**"));
         // 특정 경로에만 csrf 중지
         // http.csrf(csrf -> csrf.ignoringRequestMatchers("/replies"));
         

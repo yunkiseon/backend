@@ -1,19 +1,36 @@
 <!DOCTYPE html>
 <html lang="en" layout:decorate="~{layouts/layout}">
-  <div class="container px-6 mx-auto mt-8 flex flex-col overflow-y-auto md:flex-row" layout:fragment="content">
+  <div
+    class="container px-6 mx-auto mt-8 flex flex-col overflow-y-auto md:flex-row"
+    layout:fragment="content"
+  >
     <div class="h-32 md:h-auto md:w-1/2">
-      <img aria-hidden="true" class="object-cover w-full h-full dark:hidden" src="../assets/img/login-office.jpeg" alt="Office" />
-      <img aria-hidden="true" class="hidden object-cover w-full h-full dark:block" src="../assets/img/login-office-dark.jpeg" alt="Office" />
+      <img
+        aria-hidden="true"
+        class="object-cover w-full h-full dark:hidden"
+        src="../assets/img/login-office.jpeg"
+        alt="Office"
+      />
+      <img
+        aria-hidden="true"
+        class="hidden object-cover w-full h-full dark:block"
+        src="../assets/img/login-office-dark.jpeg"
+        alt="Office"
+      />
     </div>
     <div class="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
       <div class="w-full">
         <h1 class="mb-4 text-xl font-semibold text-gray-700 dark:text-gray-200">회원탈퇴</h1>
-        <form action="" method="post">
+        <form th:action="@{/member/leave}" method="post">
           <label class="block text-sm">
             <span class="text-gray-700 dark:text-gray-400">Email</span>
+
             <input
               name="email"
+              type="text"
+              readonly
               class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+              th:value="${#authentication.name}"
             />
           </label>
           <label class="block mt-4 text-sm">

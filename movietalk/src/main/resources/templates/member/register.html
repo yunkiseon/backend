@@ -1,8 +1,16 @@
 <!DOCTYPE html>
 <html lang="en" layout:decorate="~{layouts/layout}">
-  <div class="container px-6 mx-auto mt-8 flex flex-col overflow-y-auto md:flex-row" layout:fragment="content">
+  <div
+    class="container px-6 mx-auto mt-8 flex flex-col overflow-y-auto md:flex-row"
+    layout:fragment="content"
+  >
     <div class="h-32 md:h-auto md:w-1/2">
-      <img aria-hidden="true" class="object-cover w-full h-full dark:hidden" th:src="@{/assets/img/create-account-office.jpeg}" alt="Office" />
+      <img
+        aria-hidden="true"
+        class="object-cover w-full h-full dark:hidden"
+        th:src="@{/assets/img/create-account-office.jpeg}"
+        alt="Office"
+      />
       <img
         aria-hidden="true"
         class="hidden object-cover w-full h-full dark:block"
@@ -14,16 +22,21 @@
       <div class="w-full">
         <h1 class="mb-4 text-xl font-semibold text-gray-700 dark:text-gray-200">Create account</h1>
 
-        <form action="" method="post" object="">
+        <form th:action="@{/member/register}" method="post" th:object="${customUserDTO}">
           <label class="block text-sm">
             <span class="text-gray-700 dark:text-gray-400">Email</span>
             <input
               name="email"
               type="email"
               class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
-              placeholder="test@naver.com"
-              value=""
+              placeholder="*********"
+              th:value="${customUserDTO.email}"
             />
+            <div
+              th:if="${#fields.hasErrors('email')}"
+              th:errors="*{email}"
+              class="text-danger"
+            ></div>
           </label>
           <label class="block mt-4 text-sm">
             <span class="text-gray-700 dark:text-gray-400">Password</span>
@@ -32,7 +45,13 @@
               class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
               placeholder="***************"
               type="password"
+              th:value="${customUserDTO.password}"
             />
+            <div
+              th:if="${#fields.hasErrors('password')}"
+              th:errors="*{password}"
+              class="text-danger"
+            ></div>
           </label>
           <label class="block mt-4 text-sm">
             <span class="text-gray-700 dark:text-gray-400"> Nickname </span>
@@ -41,7 +60,13 @@
               placeholder="닉네임"
               type="text"
               name="nickname"
+              th:value="${customUserDTO.nickname}"
             />
+            <div
+              th:if="${#fields.hasErrors('nickname')}"
+              th:errors="*{nickname}"
+              class="text-danger"
+            ></div>
           </label>
           <div class="flex mt-6 text-sm">
             <label class="flex items-center dark:text-gray-400">
@@ -66,7 +91,12 @@
         <hr class="my-8" />
 
         <p class="mt-4">
-          <a class="text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline" href=""> Already have an account? Login </a>
+          <a
+            class="text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline"
+            th:href="@{/member/login}"
+          >
+            Already have an account? Login
+          </a>
         </p>
       </div>
     </div>
