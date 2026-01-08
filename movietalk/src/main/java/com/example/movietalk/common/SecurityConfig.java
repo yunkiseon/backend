@@ -31,8 +31,15 @@ public class SecurityConfig{
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http.authorizeHttpRequests(authorize -> authorize
             .requestMatchers("/","/assets/**","/js/**", "/img/**").permitAll()
+            .requestMatchers("/movie/list").permitAll()
+            .requestMatchers("/movie/create").hasRole("ADMIN")
+            .requestMatchers("/movie/register").permitAll()
+            .requestMatchers("/upload/display/**").permitAll()
             .anyRequest().permitAll());                                                                                               
-        http.formLogin(login -> login.loginPage("/member/login"));
+        http.formLogin(login -> login.loginPage("/member/login").permitAll().successHandler(loginSuccessHandler()));
+        // 혹은 defaultSuccessURL("/movie/list",true)도 가능
+        
+        
             // .successHandler(loginSuccessHandler()).permitAll());
         // http.oauth2Login(login -> login.successHandler(loginSuccessHandler()));
         http.logout(logout -> logout.logoutUrl("/member/logout")
@@ -48,6 +55,9 @@ public class SecurityConfig{
         // 특정 경로에만 csrf 중지
         // http.csrf(csrf -> csrf.ignoringRequestMatchers("/replies"));
         
+
+        //accessDeniedHandler 추가
+        http.exceptionHandling(e -> e.accessDeniedHandler(customAccessDeniedHandler()));
         
         
         return http.build();
@@ -68,10 +78,15 @@ public class SecurityConfig{
 
 
     // 로그인이후
-    // @Bean
-    // LoginSuccessHandler loginSuccessHandler(){
-    //     return new LoginSuccessHandler();
-    // }
+    @Bean
+    LoginSuccessHandler loginSuccessHandler(){
+        return new LoginSuccessHandler();
+    }
+
+    @Bean
+    CustomAccessDeniedHandler customAccessDeniedHandler (){
+        return new CustomAccessDeniedHandler();
+    }
 
     @Bean
     PasswordEncoder passwordEncoder(){

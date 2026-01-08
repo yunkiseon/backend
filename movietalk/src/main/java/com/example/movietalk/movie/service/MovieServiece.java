@@ -1,9 +1,11 @@
 package com.example.movietalk.movie.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -26,6 +28,7 @@ import com.example.movietalk.movie.repository.MovieImageRepository;
 import com.example.movietalk.movie.repository.MovieRepository;
 import com.example.movietalk.movie.repository.ReviewRepository;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -71,9 +74,19 @@ public class MovieServiece {
         List<Object[]> result = movieRepository.getMovieWithAll(mno);
         // 위의 메소드는 dto 값을 호출하는데 중복되는 무비이미지가 있는 경우
         // 하나의 무비와 여러개의 이미지를 부르면 된다. 
-        Movie movie = (Movie)result.get(0)[0];
-        // img
-        List<MovieImage> movieImages = result.stream().map(en -> (MovieImage)en[1]).collect(Collectors.toList());
+       if (result.isEmpty()) {
+        throw new EntityNotFoundException("Movie not found with mno: " + mno);
+        // 또는 return null; 또는 Optional<MovieDTO> 반환 타입으로 변경
+    }
+    
+    // Movie 정보 (첫 번째 행에서 추출)
+    Movie movie = (Movie) result.get(0)[0];
+    
+    // MovieImage 리스트 (null 필터링)
+    List<MovieImage> movieImages = result.stream()
+        .map(obj -> (MovieImage) obj[1])
+        .filter(img -> img != null)  // null인 이미지 제외
+        .collect(Collectors.toList());
         // review 수, 평점 첫번째 배열의 첫 값 가져오기
         Long reviewCnt = (Long)result.get(0)[2];
         Double avg = (Double)result.get(0)[3];
@@ -170,7 +183,19 @@ public class MovieServiece {
         //     dtolist.add(dto);
         // }); 아래와 동일
         // 여기서 순서는 짜둔 쿼리와 순서가 같아야 한다.
-        Function<Object[], MovieDTO> function = (obj -> entitiyToDTO((Movie)obj[0], List.of((MovieImage) obj[1]), (Long)obj[2], (Double)obj[3]));
+        Function<Object[], MovieDTO> function = (obj -> {
+        Movie movie = (Movie) obj[0];
+        MovieImage movieImage = (MovieImage) obj[1];
+        Long reviewCount = (Long) obj[2];
+        Double avgGrade = (Double) obj[3];
+        
+        // MovieImage가 null이면 빈 리스트, 있으면 List.of()로 감싸기
+        List<MovieImage> imageList = movieImage != null 
+            ? List.of(movieImage) 
+            : Collections.emptyList();
+        
+        return entitiyToDTO(movie, imageList, reviewCount, avgGrade);
+    });
 
         List<MovieDTO> dtolist = result.stream().map(function).collect(Collectors.toList());
 
