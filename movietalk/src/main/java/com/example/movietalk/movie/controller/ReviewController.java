@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.movietalk.movie.dto.ReviewDTO;
 import com.example.movietalk.movie.service.ReviewService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -30,6 +32,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Log4j2
 @RequiredArgsConstructor
 @RestController
+@Tag(name = "Response Review", description = "Response Review API")
 public class ReviewController {
     private final ReviewService reviewService;
 
@@ -44,8 +47,9 @@ public class ReviewController {
     
     // 특정 영화 리뷰 수정
     // 1) 영화 가져오기 /reviews/rno + get
+    @Operation(summary = "특정 리뷰 가져오기", description = "특정 영화의 특정 리뷰 조회 API")
     @GetMapping("/{mno}/{rno}")
-    public ReviewDTO getReview(@PathVariable Long rno) {
+    public ReviewDTO getReview(@PathVariable Long mno ,@PathVariable Long rno) {
         log.info("특정 영화의 특정 리뷰 요청 {}", rno);
         return reviewService.getRow(rno);
     }

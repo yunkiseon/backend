@@ -26,40 +26,18 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+	compileOnly 'org.projectlombok:lombok'
 	// springdoc 가 3버전을 사용하려면 spring boot 4 이상이여야한다.
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.15'
-	//thymeleaf 레이아웃 상속
-	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.4.0'
-	// querydsl
-	implementation 'com.querydsl:querydsl-jpa:5.1.0:jakarta'
-	implementation 'com.querydsl:querydsl-apt:5.1.0:jakarta'
-	implementation 'com.querydsl:querydsl-core:5.1.0'
-	// 소셜로그인
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-	// 썸네일
-	implementation 'net.coobird:thumbnailator:0.4.21'
-	compileOnly 'org.projectlombok:lombok'
+	implementation 'org.modelmapper:modelmapper:3.2.6'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-}
-
-tasks.withType(Test){
-	enabled = false;
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
-}
-
-tasks.withType(JavaCompile) {
-    options.compilerArgs << '-parameters'
 }
