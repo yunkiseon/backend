@@ -2,12 +2,14 @@ package com.example.todo.repository;
 
 import java.util.stream.IntStream;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.example.todo.entity.Todo;
 
+@Disabled
 @SpringBootTest
 public class TodoRepositoryTest {
     

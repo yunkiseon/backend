@@ -24,6 +24,7 @@ public class TodoService {
     private final TodoRepository todoRepository;
     private final ModelMapper modelMapper;
 
+    
     public Long create(TodoDto dto){
         // dto -> entity
         Todo todo = modelMapper.map(dto, Todo.class);
@@ -42,12 +43,21 @@ public class TodoService {
         todoRepository.deleteById(id);
     }
 
-    @Transactional(readOnly = true)
-    public List<TodoDto> findCompletedTodos(boolean completed){
-        List<Todo> result = todoRepository.findByCompleted(completed);
+    @Transactional(readOnly = true) // boolean은 안됨, 객체여야하기때문에 Boolean
+    public List<TodoDto> findCompletedTodos(Boolean completed){
+        List<Todo> result = null;
+        if (completed == null) {
+            result = todoRepository.findAll();
+        } else {
+            result = todoRepository.findByCompleted(completed);
+            
+        }
+        
         // entity => dto
         return result.stream().map(todo -> modelMapper.map(todo, TodoDto.class))
         .collect(Collectors.toList());
+
+
 
     }
     @Transactional(readOnly = true)
@@ -56,10 +66,10 @@ public class TodoService {
         return result.stream().map(todo -> modelMapper.map(todo, TodoDto.class))
         .collect(Collectors.toList());
     }
-    @Transactional(readOnly = true)
-    public List<TodoDto> findTodos(){
-        List<Todo> result = todoRepository.findAll();
-        return result.stream().map(todo -> modelMapper.map(todo, TodoDto.class))
-        .collect(Collectors.toList());
-    }
+    // @Transactional(readOnly = true)
+    // public List<TodoDto> findTodos(){
+    //     List<Todo> result = todoRepository.findAll();
+    //     return result.stream().map(todo -> modelMapper.map(todo, TodoDto.class))
+    //     .collect(Collectors.toList());
+    // }
 }
