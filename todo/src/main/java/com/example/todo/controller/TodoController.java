@@ -3,6 +3,8 @@ package com.example.todo.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.todo.dto.PageRequestDTO;
+import com.example.todo.dto.PageResultDTO;
 import com.example.todo.dto.TodoDto;
 import com.example.todo.repository.TodoRepository;
 import com.example.todo.service.TodoService;
@@ -44,10 +46,10 @@ public class TodoController {
     // @CrossOrigin(origins = "http://localhost:5173/")
     @Operation(summary = "todo 조회", description = "todo 전체 조회 API- 완료 여부 포함 가능")
     @GetMapping("") // required = false 는 필수요소가 아니라는 선언
-    public List<TodoDto> getTodoList(@RequestParam(required = false) Boolean completed) {
+    public PageResultDTO<TodoDto> getTodoList(@RequestParam(required = false) Boolean completed, PageRequestDTO dto) {
         log.info("전체 조회 요청");
-        List<TodoDto> list = todoService.findCompletedTodos(completed);
-        return list;
+        PageResultDTO<TodoDto> result = todoService.findCompletedTodos(completed, dto);
+        return result;
     }
     
 
