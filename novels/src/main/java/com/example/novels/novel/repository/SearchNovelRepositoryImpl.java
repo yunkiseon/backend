@@ -63,6 +63,21 @@ public class SearchNovelRepositoryImpl extends QuerydslRepositorySupport impleme
         builder.and((novel.id.gt(0L)));
 
 
+        // 검색용
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+        if (genreId != null && genreId != 0) {
+            booleanBuilder.and(novel.genre.id.eq(genreId));
+        }
+
+        // 검색용 (title or author)
+        if (keyword != null && !keyword.isEmpty()) {            
+            booleanBuilder.and(novel.title.contains(keyword));
+            booleanBuilder.or(novel.author.contains(keyword));
+        }
+
+
+        builder.and(booleanBuilder);
+
         // 만든 where 조건들을 tuple에 집어넣기
         tuple.where(builder);
         // orderby

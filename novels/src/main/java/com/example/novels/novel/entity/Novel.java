@@ -46,4 +46,8 @@ public class Novel extends BaseEntity {
     public void changeAvailable(boolean available) {
         this.available = available;
     }
+
+    public void changeGenre(Genre genre) {
+        this.genre = genre;
+    }
 }

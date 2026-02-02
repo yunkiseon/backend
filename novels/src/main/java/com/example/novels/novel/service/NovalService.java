@@ -62,12 +62,17 @@ public class NovalService {
         return PageResultDTO.<NovelDTO>withAll().dtoList(dtoList).pageRequestDTO(dto).totalCount(totalCount).build();
     }
 
-    public Long update(NovelDTO dto){
+    public Long updateAvailable(NovelDTO dto){
         // available 변경
         Novel novel = novelRepository.findById(dto.getId()).get();
         novel.changeAvailable(dto.isAvailable());
         return novel.getId();
-
+    }
+    public Long update(NovelDTO dto){
+        // available + 장르 변경
+        Novel novel = novelRepository.findById(dto.getId()).get();
+        novel.changeGenre(Genre.builder().id(dto.getGid()).build());
+        return novel.getId();
     }
 
     public void delete(Long id){
