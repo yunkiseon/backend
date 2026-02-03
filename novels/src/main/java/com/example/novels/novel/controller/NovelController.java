@@ -10,9 +10,9 @@ import com.example.novels.novel.service.NovalService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -43,11 +43,14 @@ public class NovelController {
         return result;
     }
     
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
     @PostMapping("/add")
     public Long postRow(@RequestBody NovelDTO dto) {
         log.info("novel 추가 요청 {}", dto);
         return novalService.create(dto);
     }
+
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
     @PutMapping("/available/{id}")
     public Long putRow(@PathVariable Long id, @RequestBody NovelDTO dto) {
         log.info("novel 수정 요청 {} {}", id, dto);
@@ -55,6 +58,7 @@ public class NovelController {
         return novalService.updateAvailable(dto);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
     @PutMapping("/edit/{id}")
     public Long putNovel(@PathVariable Long id, @RequestBody NovelDTO dto) {
         log.info("novel 수정 요청 {} {}", id, dto);
@@ -62,6 +66,7 @@ public class NovelController {
         return novalService.update(dto);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER','ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public String delete(@PathVariable Long id) {
         log.info("novel 삭제 요청 {}", id);

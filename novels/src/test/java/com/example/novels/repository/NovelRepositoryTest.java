@@ -1,6 +1,7 @@
 package com.example.novels.repository;
 
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.Disabled;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
 
 import com.example.novels.member.entity.Member;
@@ -22,7 +24,7 @@ import com.example.novels.novel.repository.GenreRepository;
 import com.example.novels.novel.repository.GradeRepository;
 import com.example.novels.novel.repository.NovelRepository;
 
-@Disabled
+// @Disabled
 @SpringBootTest
 @TestPropertySource(properties = {
     "springdoc.api-docs.enabled=false",
@@ -41,15 +43,24 @@ public class NovelRepositoryTest {
     @Autowired
     private GradeRepository gradeRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Test
+    public void memberRead(){
+        Optional<Member> member = memberRepository.findByEmailAndFromSocial("user11@gmail.com", false);
+        System.out.println(member.get());
+    }
+
     @Test
     public void memberInsertTest(){
-        IntStream.rangeClosed(1, 10).forEach(i -> {
+        IntStream.rangeClosed(11, 20).forEach(i -> {
             Member member = Member.builder()
             .email("user"+i+"@gmail.com")
-            .pw("1234")
+            .pw(passwordEncoder.encode("1234"))
             .nickname("user"+i).build();
             member.addRole(MemberRole.MEMBER);
-            if (i > 8) {
+            if (i > 18) {
                 member.addRole(MemberRole.ADMIN);
             }
             memberRepository.save(member);

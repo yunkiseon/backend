@@ -25,3 +25,6 @@ logging:
         orm:
           jdbc:
             bind: trace
+      springframework:
+        security:
+          web: trace

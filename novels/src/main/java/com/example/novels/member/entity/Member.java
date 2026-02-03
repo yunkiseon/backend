@@ -15,7 +15,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+@ToString
 @Builder
 @Getter
 @NoArgsConstructor
@@ -43,5 +45,6 @@ public class Member {
     public void clearRole() {
         roles.clear();
     }
+    private boolean fromSocial;
 
 }
