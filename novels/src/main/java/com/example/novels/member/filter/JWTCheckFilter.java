@@ -36,11 +36,14 @@ public class JWTCheckFilter extends OncePerRequestFilter{
         String path = request.getRequestURI();
         log.info("check uri {}", path);
 
-        if (path.startsWith("/v3/api-docs") || path.startsWith("/api/member")) {
+        if (path.startsWith("/v3/api-docs") || path.startsWith("/api/member/login")) {
             return true;
         }
         // \\d+$ 정규식 패턴 => \d == 숫자 0-9 / + : 1~무제한 / $ 끝나는 위치
-        if (path.startsWith("/api/novels") || path.matches("/api/novels/\\d+$")) {
+        // if (path.startsWith("/api/novels") || path.matches("/api/novels/\\d+$")) {
+        //     return true;
+        // }
+        if ("GET".equals(request.getMethod()) && path.startsWith("/api/novels")) {
             return true;
         }
         return false;

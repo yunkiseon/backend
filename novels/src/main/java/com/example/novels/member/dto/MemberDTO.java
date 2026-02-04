@@ -49,6 +49,7 @@ public class MemberDTO extends User{
             this.email = username;
             this.pw = pw;
             this.roles = roles;
+            this.nickname = nickname;
         }
 
         public Map<String, Object> getClaims(){

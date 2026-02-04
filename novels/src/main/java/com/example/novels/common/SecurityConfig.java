@@ -38,9 +38,11 @@ public class SecurityConfig {
         http.authorizeHttpRequests(authorize -> authorize
             .requestMatchers("/v3/api-docs/**").permitAll()
             .requestMatchers(HttpMethod.GET,"/api/novels/**").permitAll()
+            .requestMatchers("/api/member/login").permitAll()
             .anyRequest().authenticated());
         http.csrf(csrf -> csrf.disable());
         http.formLogin(login -> login.loginPage("/api/member/login").permitAll()
+            .loginProcessingUrl("/api/member/login")
             .successHandler(loginSuccessHandler())
             .failureHandler(new LoginFailurHandler()));
         // cors 설정
@@ -52,8 +54,18 @@ public class SecurityConfig {
         // 필터 지정 뒤에있는 필터 이전에 jwt필터를 넣겠다.
         http.addFilterBefore(jwtCheckFilter(), UsernamePasswordAuthenticationFilter.class);
 
+        http.exceptionHandling(e -> e
+            .authenticationEntryPoint((req,res,ex) -> {
+                res.setStatus(401);
+            })
+            .accessDeniedHandler((req,res,ex) -> {
+                res.setStatus(403);
+            }));
+
     return http.build();
     }
+
+    
 
     @Bean
     JWTCheckFilter jwtCheckFilter(){
