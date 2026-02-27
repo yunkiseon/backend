@@ -1,18 +1,15 @@
-package com.example.ai.config;
+package com.example.novels.novel.ai.config;
 
 import javax.sql.DataSource;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
-import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.ChatMemoryRepository;
-import org.springframework.ai.chat.memory.InMemoryChatMemoryRepository;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.ai.chat.memory.repository.jdbc.JdbcChatMemoryRepository;
 import org.springframework.ai.chat.memory.repository.jdbc.MysqlChatMemoryRepositoryDialect;
 import org.springframework.ai.embedding.EmbeddingModel;
-import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.SimpleVectorStore;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.context.annotation.Bean;
@@ -38,13 +35,13 @@ public class OpenAIConfig {
     }
 
     // 대화를 얼마나 저장할 것인지 -> 대화저장 전략
-    @Bean
-    ChatMemory chatMemory(ChatMemoryRepository chatMemoryRepository){
-        return MessageWindowChatMemory.builder()
-        .chatMemoryRepository(chatMemoryRepository)
-        .maxMessages(10)
-        .build();
-    }
+    // @Bean
+    // ChatMemory chatMemory(ChatMemoryRepository chatMemoryRepository){
+    //     return MessageWindowChatMemory.builder()
+    //     .chatMemoryRepository(chatMemoryRepository)
+    //     .maxMessages(10)
+    //     .build();
+    // }
 
     @Bean
     VectorStore vectorStore(EmbeddingModel embeddingModel){
@@ -58,9 +55,7 @@ public class OpenAIConfig {
         // var ragRequest = SearchRequest.builder().topK(4).similarityThreshold(0.3).build();
 
     return builder
-    .defaultAdvisors(MessageChatMemoryAdvisor.builder(chatMemory).build()
-    // QuestionAnswerAdvisor.builder(vectorStore).searchRequest(ragRequest).build()
-    )
+    .defaultAdvisors(MessageChatMemoryAdvisor.builder(chatMemory).build())
     .build();    
     }
 }

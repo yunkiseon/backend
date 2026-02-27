@@ -3,6 +3,7 @@ package com.example.novels.novel.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.novels.novel.domain.response.AiDescriptionDto;
 import com.example.novels.novel.dto.NovelDTO;
 import com.example.novels.novel.dto.PageRequestDTO;
 import com.example.novels.novel.dto.PageResultDTO;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 
@@ -72,6 +75,13 @@ public class NovelController {
         log.info("novel 삭제 요청 {}", id);
         novalService.delete(id);
         return "success";
+    }
+    
+    @GetMapping("/{id}/ai-desc")
+    public AiDescriptionDto getRows(@PathVariable Long id) {
+        log.info("novel 리스트 요청 {}", id);
+        AiDescriptionDto result = novalService.generatedDescription(id);
+        return result;
     }
     
     

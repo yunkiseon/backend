@@ -70,9 +70,11 @@ public class SearchNovelRepositoryImpl extends QuerydslRepositorySupport impleme
         }
 
         // 검색용 (title or author)
-        if (keyword != null && !keyword.isEmpty()) {            
-            booleanBuilder.and(novel.title.contains(keyword));
-            booleanBuilder.or(novel.author.contains(keyword));
+        if (keyword != null && !keyword.isEmpty()) {
+            booleanBuilder.and(
+                novel.title.contains(keyword)
+                .or(novel.author.contains(keyword))
+            );
         }
 
 

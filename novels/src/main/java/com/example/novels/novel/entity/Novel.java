@@ -39,6 +39,10 @@ public class Novel extends BaseEntity {
 
     private LocalDate publishedDate; // 출판일
 
+    private String summary; // 줄거리
+
+    private String description; // ai 소개글
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "genre_id")
     private Genre genre;
@@ -49,5 +53,13 @@ public class Novel extends BaseEntity {
 
     public void changeGenre(Genre genre) {
         this.genre = genre;
+    }
+
+    public void changeSummary(String summary) {
+        this.summary = summary;
+    }
+
+    public void changeDescription(String description) {
+        this.description = description;
     }
 }
